@@ -10,22 +10,22 @@ ULL convert_ull(char str[11])
 	{
 		if (str[i] == 0)
 			break;
-		int b = str[i] - 'a';
-		int c = b << (i * 5);
+		ULL b = str[i] - 'a'+1;
+		ULL c = b << (i * 5);
 		a += c;
 	}
 	return a;
 }
 
-void convert_str(char str[11], ULL a)
+void convert_str(char str2[11], ULL a)
 {
 	for (int i = 0; i < 10; i++)
 	{
 		int b = a >> (i * 5);
-		str[i] = b & 31;
-		if (str[i] == 0)
+		str2[i] = b & 31;
+		if (str2[i] == 0)
 			break;
-		str[i] += 'a';
+		str2[i] += 'a'-1;
 	}
 }
 
@@ -50,10 +50,10 @@ int main()
 		//convert to string
 		char str2[11] = { 0, };
 		convert_str(str2, a);
-		printf("%s %s", str, str2);
+		printf("%s %s\n", str, str2);
 	}
 
 
-	//string compare
+	//string comparez
 	return 0;
 }
