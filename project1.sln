@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "170816.Bitmap1", "170816.Bi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180407.search.block", "180407.search.block\180407.search.block.vcxproj", "{774D3BE0-D610-4234-BE0E-EF496165123B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180425.sorting", "180425.sorting\180425.sorting.vcxproj", "{345B9B84-55EB-47DA-9F92-F0170271A441}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{774D3BE0-D610-4234-BE0E-EF496165123B}.Debug|Win32.Build.0 = Debug|Win32
 		{774D3BE0-D610-4234-BE0E-EF496165123B}.Release|Win32.ActiveCfg = Release|Win32
 		{774D3BE0-D610-4234-BE0E-EF496165123B}.Release|Win32.Build.0 = Release|Win32
+		{345B9B84-55EB-47DA-9F92-F0170271A441}.Debug|Win32.ActiveCfg = Debug|Win32
+		{345B9B84-55EB-47DA-9F92-F0170271A441}.Debug|Win32.Build.0 = Debug|Win32
+		{345B9B84-55EB-47DA-9F92-F0170271A441}.Release|Win32.ActiveCfg = Release|Win32
+		{345B9B84-55EB-47DA-9F92-F0170271A441}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
