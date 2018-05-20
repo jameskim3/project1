@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180505.virus", "180505.viru
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180507.lubic", "180507.lubic\180507.lubic.vcxproj", "{C7A356A5-36E3-4E29-9A3B-388FAAB02D22}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180519.puzzle", "180519.puzzle\180519.puzzle.vcxproj", "{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -57,6 +59,10 @@ Global
 		{C7A356A5-36E3-4E29-9A3B-388FAAB02D22}.Debug|Win32.Build.0 = Debug|Win32
 		{C7A356A5-36E3-4E29-9A3B-388FAAB02D22}.Release|Win32.ActiveCfg = Release|Win32
 		{C7A356A5-36E3-4E29-9A3B-388FAAB02D22}.Release|Win32.Build.0 = Release|Win32
+		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Debug|Win32.Build.0 = Debug|Win32
+		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Release|Win32.ActiveCfg = Release|Win32
+		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
