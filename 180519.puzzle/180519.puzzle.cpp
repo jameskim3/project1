@@ -7,15 +7,26 @@ unsigned char newmap[4096][4096];
 unsigned char overlabX[4096][4096];
 unsigned char overlabY[4096][4096];
 unsigned char dummy1[4096];
+unsigned char dummy2[256][256];
 //unsigned char org[4096][4096];
 //unsigned char org[4096][4096];
 //unsigned char org[4096][4096];
+
+void test(unsigned char newmap[4096][4096]);
 
 void swap(int& a, int& b)
 {
 	int t = a;
 	a = b;
 	b = t;
+}
+
+int ismatch()
+{
+	if (memcmp(orgmap, newmap, 4096 * 4096) == 0)
+		return 1;
+	else
+		return 0;
 }
 int check_line(int x1, int x2, int y1, int y2)
 {
@@ -33,7 +44,7 @@ int check_line(int x1, int x2, int y1, int y2)
 void build_map()
 {
 	int x1, y1, x2, y2;
-	for (int no = 0; no < 1024; no++)
+	for (int no = 0; no < 128; no++)
 	{
 		while (1)
 		{
@@ -64,6 +75,23 @@ void build_map()
 	}
 }
 
+void puzzle_map()
+{
+	for (int i = 0; i < 256; i++)
+	{
+		int y1 = rand() % 16;
+		int x1 = rand() % 16;
+		int y2 = rand() % 16;
+		int x2 = rand() % 16;
+		for (int j = 0; j < 256; j++)
+		{
+			memcpy(&dummy2, &newmap[y1 * 256 + j][x1], 256);
+			memcpy(&newmap[y1 * 256 + j][x1], &newmap[y2 * 256 + j][x2], 256);
+			memcpy(&newmap[y2 * 256 + j][x2], &dummy2, 256);
+		}
+	}
+}
+
 int main()
 {
 	memset(dummy1, 0, 4096);
@@ -72,6 +100,9 @@ int main()
 		memset(orgmap, 0, 4096 * 4096);
 		build_map();
 		memcpy(newmap, orgmap, 4096 * 4096);
+		puzzle_map();
+
+		test(newmap);
 	}
 	return 0;
 }
