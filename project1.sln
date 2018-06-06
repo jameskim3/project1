@@ -21,6 +21,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180507.lubic", "180507.lubi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180519.puzzle", "180519.puzzle\180519.puzzle.vcxproj", "{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180606.LittleAirplane", "180606.LittleAirplane\180606.LittleAirplane.vcxproj", "{96677CC0-3BF5-4B32-878A-C8BD24B73BAD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180606.jangki", "180606.jangki\180606.jangki.vcxproj", "{4690D7FF-C0BA-4581-84F9-475DF5BD6285}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -63,6 +67,14 @@ Global
 		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Debug|Win32.Build.0 = Debug|Win32
 		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Release|Win32.ActiveCfg = Release|Win32
 		{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}.Release|Win32.Build.0 = Release|Win32
+		{96677CC0-3BF5-4B32-878A-C8BD24B73BAD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{96677CC0-3BF5-4B32-878A-C8BD24B73BAD}.Debug|Win32.Build.0 = Debug|Win32
+		{96677CC0-3BF5-4B32-878A-C8BD24B73BAD}.Release|Win32.ActiveCfg = Release|Win32
+		{96677CC0-3BF5-4B32-878A-C8BD24B73BAD}.Release|Win32.Build.0 = Release|Win32
+		{4690D7FF-C0BA-4581-84F9-475DF5BD6285}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4690D7FF-C0BA-4581-84F9-475DF5BD6285}.Debug|Win32.Build.0 = Debug|Win32
+		{4690D7FF-C0BA-4581-84F9-475DF5BD6285}.Release|Win32.ActiveCfg = Release|Win32
+		{4690D7FF-C0BA-4581-84F9-475DF5BD6285}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
