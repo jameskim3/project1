@@ -1,8 +1,5 @@
-﻿Build started 2018-06-25 오후 11:35:17.
-     1>Project "E:\source\project1\180613.Pelindrome\180613.Pelindrome.vcxproj" on node 2 (Clean target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'e:\source\project1\debug\180613.pelindrome.pdb' because it is being used by another process.
-     1>Done Building Project "E:\source\project1\180613.Pelindrome\180613.Pelindrome.vcxproj" (Clean target(s)).
+﻿Build started 2018-07-09 오전 1:00:36.
 
 Build succeeded.
 
-Time Elapsed 00:00:00.01
+Time Elapsed 00:00:00.13
