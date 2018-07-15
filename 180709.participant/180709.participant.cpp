@@ -6,79 +6,64 @@
 
 struct PARTICIPANT
 {
-	int id, pre;
+	int id, preference;
 };
 
 extern void init(int n, PARTICIPANT src[]);
 extern void remove(int pre);
 extern void add(PARTICIPANT tar);
-extern void totalsum(int *a, int *b);
+extern void getsum2(int *a, int *b);
 
-PARTICIPANT src[MAX];
+PARTICIPANT src[MAX*2];
 int N;
-char chk[2][MAX];
+char chk[MAX*2];
 
-int setid(int t)//0 id, 1 pre
+int setid(int t)
 {
 	int id;
 	while (1)
 	{
-		id = rand()+1;
-		if (chk[t][id] == 1) continue;
-		chk[t][id] = 1;
+		id = (rand() + rand() + rand()) % (MAX * 2) + 1;
+		if (chk[id] == 1) continue;
+		chk[id] = 1;
 		break;
 	}
 	return id;
 }
 
-int getid(int t)//0 id, 1 pre
-{
-	int id;
-	while (1)
-	{
-		id = rand();
-		if (chk[t][id] == 1) break;
-	}
-	return id;
-}
-
-PARTICIPANT new_parti()
+PARTICIPANT new_participant()
 {
 	PARTICIPANT tmp;
 	tmp.id = setid(0);
-	tmp.pre = rand() % MAX + 1;
-	chk[1][tmp.pre] = 1;
+	tmp.preference = rand() % MAX + 1;
 
 	return tmp;
 }
 
 int main()
 {
-	int i, j, k, u,v;
+	int i, j, k, s, t, u, v;
 	int result,performance;
 	for (int tc = 0; tc < 10; tc++)
 	{
 		result = 0; performance = 0; u = v = 0;
-		memset(chk, 0, sizeof(char)*MAX*2);
+		memset(chk, 0, sizeof(chk));
 		N = MIN + rand() % (MAX - MIN);
 		for (i = 0; i < N; i++)
-			src[i] = new_parti();
+			src[i] = new_participant();
 		
 		init(N, src);
 
 		time_t s = clock();
-		for (j = 0; j < 100; j++)
+		for (j = 0; j < 10000; j++)
 		{
-			for (k = 0; k < 100; k++)
-			{
-				remove(getid(1));
-				add(new_parti());
-			}
+			remove(rand()%3);//0 MIN, 1 MAX, 2 MID
+			add(new_participant());
 
-			totalsum(&u, &v);
+			getsum2(&u, &v);
 			result = (result + u + v) % 10003;
 		}
 		performance = clock() - s;
-		printf("#&d : %d %d\n", tc + 1, result, performance);
+		printf("#%d : %d %d\n", tc + 1, result, performance);
 	}
 }
