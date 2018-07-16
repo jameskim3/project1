@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180709.participant", "18070
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180714.disk2", "180714.disk2\180714.disk2.vcxproj", "{D75FE4C2-D29C-4D4E-A974-2EC3581C60E8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180715.StickerMemo", "180715.StickerMemo\180715.StickerMemo.vcxproj", "{91409985-189B-4A0A-B24F-DB1A7EB54A92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -147,6 +149,10 @@ Global
 		{D75FE4C2-D29C-4D4E-A974-2EC3581C60E8}.Debug|Win32.Build.0 = Debug|Win32
 		{D75FE4C2-D29C-4D4E-A974-2EC3581C60E8}.Release|Win32.ActiveCfg = Release|Win32
 		{D75FE4C2-D29C-4D4E-A974-2EC3581C60E8}.Release|Win32.Build.0 = Release|Win32
+		{91409985-189B-4A0A-B24F-DB1A7EB54A92}.Debug|Win32.ActiveCfg = Debug|Win32
+		{91409985-189B-4A0A-B24F-DB1A7EB54A92}.Debug|Win32.Build.0 = Debug|Win32
+		{91409985-189B-4A0A-B24F-DB1A7EB54A92}.Release|Win32.ActiveCfg = Release|Win32
+		{91409985-189B-4A0A-B24F-DB1A7EB54A92}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
