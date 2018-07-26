@@ -14,6 +14,7 @@ struct MyPARTICIPANT
 int rp;
 MyPARTICIPANT nd[MAX*2];
 MyPARTICIPANT* heap[MAX];
+MyPARTICIPANT* mid;
 int psum[MAX];
 int total_sum;
 
@@ -21,6 +22,55 @@ int min_pos=9999999;
 int max_pos=-1;
 int mid_pos;
 
+void getnext()
+{
+	if (mid->next != 0) mid = mid->next;
+	else
+	{
+		int n = 0;
+		MyPARTICIPANT* tmp = heap[mid->preference + ++n];
+		while (tmp == 0)
+			tmp = heap[mid->preference + ++n];
+		mid = tmp;
+	}
+}
+void getpre()
+{
+	if (heap[mid->preference] != mid)
+	{
+		MyPARTICIPANT* tmp = heap[mid->preference];
+		while (tmp->next != mid)
+			tmp = tmp->next;
+		mid = tmp;
+	}
+	else
+	{
+		int n = 0;
+		MyPARTICIPANT* tmp = heap[mid->preference - ++n];
+		while (tmp == 0)
+			tmp = heap[mid->preference - ++n];
+		while (tmp->next != 0)
+			tmp = tmp->next;
+		mid = tmp;
+	}
+}
+
+void addheap(MyPARTICIPANT* p)
+{
+	if (heap[p->preference] == 0 || heap[p->preference]->id > p->id)
+	{
+		p->next = heap[p->preference];
+		heap[p->preference] = p;
+	}
+	else
+	{
+		MyPARTICIPANT* tmp = heap[p->preference];
+		while (tmp->next != 0 && tmp->next->id < p->id)
+			tmp = tmp->next;
+		p->next = tmp->next;
+		tmp->next = p;
+	}
+}
 void init(int n, PARTICIPANT src[])
 {
 	int i, j, k;
@@ -37,14 +87,35 @@ void init(int n, PARTICIPANT src[])
 		MyPARTICIPANT* tmp = &nd[rp++];
 		tmp->id = src[i].id;
 		tmp->preference = src[i].preference;
-		tmp->next = heap[tmp->preference];
-		heap[tmp->preference] = tmp;
+
+		addheap(tmp);
 
 		psum[tmp->preference]++;
 		total_sum += 1;
 
 		if (min_pos > tmp->preference)min_pos = tmp->preference;
 		if (max_pos < tmp->preference)max_pos = tmp->preference;
+		if (total_sum == 1)
+			mid = tmp;
+		else
+		{
+			if (total_sum % 2 == 0)
+			{
+				if (tmp->preference < mid->preference ||
+					(tmp->preference == mid->preference && tmp->id < mid->id))
+				{
+					getpre();
+				}				
+			}
+			else
+			{
+				if (tmp->preference > mid->preference ||
+					(tmp->preference == mid->preference && tmp->id > mid->id))
+				{
+					getnext();
+				}
+			}
+		}
 	}
 }
 void remove_pos(int pos)
