@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="180709.participant.cpp" />
     <ClCompile Include="sol1.cpp" />
+    <ClCompile Include="sol2.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

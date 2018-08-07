@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 
-#define MIN 10000
+#define MIN 40000
 #define MAX 50000
 
 struct PARTICIPANT
@@ -14,9 +14,9 @@ extern void remove(int pre);
 extern void add(PARTICIPANT tar);
 extern void getsum2(int *a, int *b);
 
-PARTICIPANT src[MAX*2];
+PARTICIPANT src[MAX * 2];
 int N;
-char chk[MAX*2];
+char chk[MAX * 2];
 
 int setid(int t)
 {
@@ -43,7 +43,7 @@ PARTICIPANT new_participant()
 int main()
 {
 	int i, j, k, s, t, u, v;
-	int result,performance;
+	int result, performance;
 	for (int tc = 0; tc < 10; tc++)
 	{
 		result = 0; performance = 0; u = v = 0;
@@ -51,13 +51,13 @@ int main()
 		N = MIN + rand() % (MAX - MIN);
 		for (i = 0; i < N; i++)
 			src[i] = new_participant();
-		
+
 		init(N, src);
 
 		time_t s = clock();
 		for (j = 0; j < 10000; j++)
 		{
-			remove(rand()%3);//0 MIN, 1 MAX, 2 MID
+			remove(rand() % 3);//0 MIN, 1 MAX, 2 MID
 			add(new_participant());
 
 			getsum2(&u, &v);

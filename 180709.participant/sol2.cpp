@@ -8,17 +8,16 @@ struct PARTICIPANT
 struct MyPARTICIPANT
 {
 	int id, preference;
-	MyPARTICIPANT * next;
+	MyPARTICIPANT * left;
+	MyPARTICIPANT * right;
 };
 
 int rp;
 MyPARTICIPANT nd[MAX * 2];
-MyPARTICIPANT* heap[MAX];
-MyPARTICIPANT* mid;
+MyPARTICIPANT* LEFT;
+MyPARTICIPANT* RIGHT;
 int total_sum;
 
-MyPARTICIPANT* min_pos;
-MyPARTICIPANT* max_pos;
 int high_sum;
 int low_sum;
 
@@ -71,60 +70,117 @@ void addheap(MyPARTICIPANT* p)
 		tmp->next = p;
 	}
 }
+int compare(MyPARTICIPANT* a, MyPARTICIPANT* b)
+{
+	if (a->preference < b->preference ||
+		a->preference == b->preference && a->id < b->id)
+		return 1;
+	else if (a->id == b->id)
+		return 0;
+	else return -1;
+}
+MyPARTICIPANT* GetHigh(MyPARTICIPANT* p)
+{
+	if (p == 0)return 0;
+	while (p->right != 0)
+		p = p->right;
+	return p;
+}
+MyPARTICIPANT* GetLow(MyPARTICIPANT* p)
+{
+	if (p == 0)return 0;
+	while (p->left != 0)
+		p = p->left;
+	return p;
+}
+
+MyPARTICIPANT* addTree(MyPARTICIPANT* r, MyPARTICIPANT* p)
+{
+	if (r == 0) 
+	{
+		return p;
+	}
+	if (compare(r,p) == 1)
+	{
+		r->right = addTree(r->right, p);
+		return r;
+	}
+	else
+	{
+		r->left = addTree(r->left, p);
+		return r;
+	}
+}
+MyPARTICIPANT* removeTree(MyPARTICIPANT* r, MyPARTICIPANT* p)
+{
+	if (r == 0) return 0;
+	if (r->preference < p->preference ||
+		r->preference == p->preference && r->id < p->id)
+	{
+		r->right = removeTree(r->right, p);
+		return r;
+	}
+	else if (r->id != p->id)
+	{
+		r->left = removeTree(r->left, p);
+		return r;
+	}
+	else //same
+	{
+		if (r->left == 0)
+			return r->right;
+		else if (r->right == 0)
+			return r->left;
+		else
+		{
+			MyPARTICIPANT* tmp_min = GetHigh(r->right);
+			removeTree(r->right, tmp_min);
+			tmp_min->left = r->left;
+			tmp_min->right = r->right;
+			return tmp_min;
+		}
+	}
+}
 void addSum(MyPARTICIPANT* tmp)
 {
-	addheap(tmp);
-
 	total_sum += 1;
 
-	if (min_pos != 0)
-	{
-		if (min_pos->preference > tmp->preference
-			|| (min_pos->preference == tmp->preference && min_pos->id > tmp->id))
-			min_pos = tmp;
-	}
-	if (max_pos != 0)
-	{
-		if (max_pos->preference < tmp->preference
-			|| (max_pos->preference == tmp->preference && max_pos->id < tmp->id))
-			max_pos = tmp;
-	}
 	if (total_sum == 1)
 	{
-		mid = tmp;
-		min_pos = tmp;
-		max_pos = tmp;
+		LEFT = tmp;
 	}
 	else
 	{
 		if (total_sum % 2 == 0)
 		{
-			if (tmp->preference < mid->preference ||
-				(tmp->preference == mid->preference && tmp->id < mid->id))
+			MyPARTICIPANT* right_min = GetLow(RIGHT);
+
+			if (compare(tmp, right_min) == 1)
 			{
-				low_sum -= mid->preference;
-				high_sum += mid->preference;
-				low_sum += tmp->preference;
-				mid = getpre(mid);
+				LEFT = addTree(LEFT, tmp);
+				MyPARTICIPANT* left_max = GetHigh(LEFT);
+				RIGHT = addTree(RIGHT, left_max);
+				LEFT = removeTree(LEFT, left_max);
 			}
 			else
 			{
-				high_sum += tmp->preference;
+				RIGHT = addTree(RIGHT, tmp);
 			}
 		}
 		else
 		{
-			if (tmp->preference > mid->preference ||
-				(tmp->preference == mid->preference && tmp->id > mid->id))
+			MyPARTICIPANT* right_min = GetLow(RIGHT);
+
+			if (compare(tmp, right_min) == -1)
 			{
-				mid = getnext(mid);
-				low_sum += mid->preference;
-				high_sum -= mid->preference;
-				high_sum += tmp->preference;
+				RIGHT = addTree(RIGHT, tmp);
+				MyPARTICIPANT* right_min = GetLow(RIGHT);
+				LEFT = addTree(LEFT, right_min);
+				RIGHT = removeTree(RIGHT, right_min);
 			}
 			else
 			{
-				low_sum += tmp->preference;
+				LEFT = addTree(LEFT, tmp);
 			}
 		}
 	}
@@ -134,20 +190,14 @@ void init(int n, PARTICIPANT src[])
 	int i, j, k;
 	total_sum = 0;
 	low_sum = high_sum = 0;
-	min_pos = 0;
-	max_pos = 0;
+
 	rp = 0;
-	for (i = 0; i < MAX; i++)
-	{
-		heap[i] = 0;
-	}
 	for (i = 0; i < n; i++)
 	{
 		MyPARTICIPANT* tmp = &nd[rp++];
 		tmp->id = src[i].id;
 		tmp->preference = src[i].preference;
 		addSum(tmp);
-
 	}
 }
 void removeHeap(MyPARTICIPANT* p)
