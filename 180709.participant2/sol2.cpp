@@ -102,6 +102,29 @@ void addSum(MyPARTICIPANT* tmp)
 		LEFT = tmp;
 		low_sum += tmp->preference;
 	}
+	else if (total_sum == 2)
+	{
+		MyPARTICIPANT* left_max = GetHigh(LEFT);
+		if (compare(left_max, tmp) == 1)
+		{
+			RIGHT = addTree(RIGHT, tmp);
+			high_sum += tmp->preference;
+		}
+		else
+		{
+			LEFT = addTree(LEFT, tmp);
+			low_sum += tmp->preference;
+			MyPARTICIPANT* left_max = GetHigh(LEFT);
+			MyPARTICIPANT* dup = &nd[rp++];
+			dup->preference = left_max->preference;
+			dup->id = left_max->id;
+
+			RIGHT = addTree(RIGHT, dup);
+			high_sum += dup->preference;
+			LEFT = removeTree(LEFT, left_max);
+			low_sum -= left_max->preference;
+		}
+	}
 	else
 	{
 		if (total_sum % 2 == 0)

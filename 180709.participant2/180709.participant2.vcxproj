@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E82258AE-96F4-4092-AE7F-BEB2952589B9}</ProjectGuid>
+    <ProjectGuid>{784C52A4-84EC-4EBE-BF13-0A99C7EF08F8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>My180709participant</RootNamespace>
   </PropertyGroup>
@@ -85,11 +85,11 @@
   <ItemGroup>
     <ClCompile Include="180709.participant.cpp" />
     <ClCompile Include="sol1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="sol2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

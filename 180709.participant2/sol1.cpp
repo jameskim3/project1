@@ -71,17 +71,6 @@ void addheap(MyPARTICIPANT* p)
 		tmp->next = p;
 	}
 }
-
-int compare(MyPARTICIPANT* a, MyPARTICIPANT *b)
-{
-	if (a->preference < b->preference ||
-		(a->preference == b->preference && a->id < b->id))
-		return 1;
-	else if (a->id == b->id)return 0;
-	
-	return -1;
-}
-
 void addSum(MyPARTICIPANT* tmp)
 {
 	addheap(tmp);
@@ -102,24 +91,9 @@ void addSum(MyPARTICIPANT* tmp)
 	}
 	if (total_sum == 1)
 	{
-		low_sum += tmp->preference;
 		mid = tmp;
 		min_pos = tmp;
 		max_pos = tmp;
-	}
-	else if (total_sum == 2)
-	{
-		if (compare(min_pos, tmp)==0)
-		{
-			low_sum -= mid->preference;
-			high_sum += mid->preference;
-			low_sum += tmp->preference;
-			mid = tmp;
-		}
-		else
-		{
-			high_sum += tmp->preference;
-		}
 	}
 	else
 	{

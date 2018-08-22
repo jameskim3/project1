@@ -47,6 +47,7 @@ int main()
 	for (int tc = 0; tc < 10; tc++)
 	{
 		time_t s = clock();
+
 		result = 0; performance = 0; u = v = 0;
 		memset(chk, 0, sizeof(chk));
 		N = MIN + rand() % (MAX - MIN);
