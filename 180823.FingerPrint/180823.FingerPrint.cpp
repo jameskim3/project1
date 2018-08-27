@@ -72,7 +72,7 @@ void make_model()
 		}
 	}
 
-	int rot = 0;// rand() % 3;
+	int rot = rand() % 3;
 	switch (rot)
 	{
 	case 0:
@@ -132,19 +132,20 @@ int main()
 	//freopen("out.txt", "w", stdout);
 	int ret = 0;
 	time_t start = clock();
-	for (int tc = 0; tc < 10; tc++)
+	for (int tc = 0; tc < 1000; tc++)
 	{
 		init();
 		N = mat[rand() % 5];
 		M = N / 2;
 		make_map();
 		make_model();
-		if (changeCnt == checkModel(M, model_map)) ret++;
+		if (changeCnt == checkModel(M, model_map)) 
+			ret++;
 	}
 
 	time_t end = clock();
+	int performance =  end - start;
 
-	printf("Perfomance:%d, Result:%d", end - start,ret);
-
+	printf("Perfomance:%d, Result:%d ", performance, ret);
 	return 0;
 }

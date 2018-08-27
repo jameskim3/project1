@@ -49,21 +49,6 @@ int chk_img(char buf[256][256], char reg[128][128])
 	}
 	return 0;
 }
-void print_img()
-{
-	return;
-	printf("\n\n");
-	for (int y = 0; y < M2 * 2; y++)
-	{
-		for (int x = 0; x < M2 * 2; x++)
-		{
-			printf("%d", origin[y][x]);
-			if (x == M2 - 1) printf(" ");
-		}
-		printf("\n");
-		if (y == M2 - 1) printf("\n");
-	}
-}
 void build_map()
 {
 	register int i, j, k,l,m,y,x;
@@ -92,7 +77,6 @@ void build_map()
 						if (chk_img(buf, devide[m]) == 1)
 						{
 							assign_img(seq,origin);
-							print_img();
 							return;
 						}
 					}
@@ -122,29 +106,35 @@ void send_map(int n, char img[128][128])
 	if (map_cnt == 5)build_map();
 }
 
-int checkReg(int y, int x, ULL bitmap[32][32], ULL reg[16][16])
+int checkReg(int y, int x, ULL bitmap[32][32], ULL reg[3][16][16])
 {
 	int ret = 0;
+	int min = 999999;
 	register int i, j, k, s, t, u;
-	for (i = 0; i < M2 / 8; i++)
+	for (k = 0; k < 3; k++)
 	{
-		for (j = 0; j < M2 / 8; j++)
+		ret = 0;
+		for (i = 0; i < M2 / 8; i++)
 		{
-			ULL bitcomp = bitmap[i + y][j + x] ^ reg[i][j];
-			while (bitcomp != 0)
+			for (j = 0; j < M2 / 8; j++)
 			{
-				bitcomp &= (bitcomp - 1);
-				ret++;
+				ULL bitcomp = bitmap[i + y][j + x] ^ reg[k][i][j];
+				while (bitcomp != 0)
+				{
+					bitcomp &= (bitcomp - 1LL);
+					ret++;
+				}
 			}
 		}
+		if (min > ret)min = ret;
 	}
-	return ret;
+	return min;
 }
 int checkModel(int n, char img[128][128])
 {
 	int ret=0;
 	ULL bitmap[32][32];
-	ULL reg[16][16];
+	ULL reg[3][16][16];
 	register int i, j, k, s, t, u, y,x;
 	for (y = 0; y < M2 * 2/8; y++)
 	{
@@ -158,24 +148,38 @@ int checkModel(int n, char img[128][128])
 					s = y * 8;
 					t = x * 8;
 					u = i * 8 + j;
-					bitmap[y][x] += origin[s + i][t + j] << u;
+					bitmap[y][x] += ULL(origin[s + i][t + j]) << u;
 				}
 			}
 		}
 	}
-	for (y = 0; y < M2 / 8; y++)
+
+	char buf[3][128][128];
+	for (i = 0; i < n; i++)
 	{
-		for (x = 0; x < M2 / 8; x++)
+		for (j = 0; j < n; j++)
 		{
-			reg[y][x] = 0;
-			for (i = 0; i < 8; i++)
+			buf[0][i][j] = img[i][j];
+			buf[1][i][j] = img[n - 1 - j][i];
+			buf[2][i][j] = img[j][n-1-i];
+		}
+	}
+	for (k = 0; k < 3; k++)
+	{
+		for (y = 0; y < M2 / 8; y++)
+		{
+			for (x = 0; x < M2 / 8; x++)
 			{
-				for (j = 0; j < 8; j++)
+				reg[k][y][x] = 0;
+				for (i = 0; i < 8; i++)
 				{
-					s = y * 8;
-					t = x * 8;
-					u = i * 8 + j;
-					reg[y][x] += img[s + i][t + j] << u;
+					for (j = 0; j < 8; j++)
+					{
+						s = y * 8;
+						t = x * 8;
+						u = i * 8 + j;
+						reg[k][y][x] += ULL(buf[k][s + i][t + j]) << u;
+					}
 				}
 			}
 		}

@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2DD9B51D-327C-4A62-A62C-8FB8A6606125}</ProjectGuid>
+    <ProjectGuid>{181023ED-CA0D-4B6C-8A9F-AEFFB62CE110}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My170816Bitmap1</RootNamespace>
+    <RootNamespace>My180827KeyValueDisk</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,9 +83,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="170816.Bitmap1.cpp" />
-    <ClCompile Include="sol1.cpp" />
-    <ClCompile Include="solve.cpp" />
+    <ClCompile Include="180827.KeyValueDisk.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
