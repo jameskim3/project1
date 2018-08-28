@@ -117,8 +117,8 @@ int main(void)
 	for (register int TC = 0; TC < TCSIZE; TC++)
 	{
 		noise(bitmap[TC]);
-		rotate(bitmap[TC], rand() % 4);
-		flip(bitmap[TC], rand() % 3);
+		rotate(bitmap[TC], 1);// rand() % 4);
+		flip(bitmap[TC], 1);// rand() % 3);
 	}
 
 	start = clock();
@@ -128,7 +128,10 @@ int main(void)
 	int PASS = 0;
 
 	for (register int TC = 0; TC < TCSIZE; TC++)
-	if (memcmp(org[TC], result[TC], NN) == 0) PASS++;
+	{
+		if (memcmp(org[TC], result[TC], NN) == 0)
+			PASS++;
+	}
 
 	printf("SCORE: %d\n", PASS * 10000 + PERFORMANCE);
 }

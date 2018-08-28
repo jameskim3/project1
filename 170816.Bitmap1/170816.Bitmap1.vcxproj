@@ -84,8 +84,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="170816.Bitmap1.cpp" />
-    <ClCompile Include="sol1.cpp" />
-    <ClCompile Include="solve.cpp" />
+    <ClCompile Include="sol1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="sol2.cpp" />
+    <ClCompile Include="solve.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
