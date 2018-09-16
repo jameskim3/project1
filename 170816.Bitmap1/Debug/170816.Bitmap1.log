@@ -1,7 +1,4 @@
-﻿Build started 2018-08-29 오전 12:39:59.
-     1>Project "E:\source\project1\170816.Bitmap1\170816.Bitmap1.vcxproj" on node 2 (Clean target(s)).
-     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : Access to the path 'e:\source\project1\debug\170816.bitmap1.exe' is denied.
-     1>Done Building Project "E:\source\project1\170816.Bitmap1\170816.Bitmap1.vcxproj" (Clean target(s)).
+﻿Build started 2018-09-16 오후 10:44:09.
 
 Build succeeded.
 
