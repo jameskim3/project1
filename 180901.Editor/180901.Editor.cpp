@@ -1,9 +1,15 @@
 #include <iostream>
 #include <time.h>
 
-const int MAX_STR = 1024 * 1024;
-const int MAX_TABLE = 300000;
+static char document[1024 * 1024 + 2];
+static int DS;
+static int SCORE = 0;
+static int PANELTY = 0;
+static int seed = 3;
 
+static void verify(char* document);
+
+extern void create();
 extern void putChar(char a);
 extern void putEnter();
 extern void putBackSpace();
@@ -11,59 +17,31 @@ extern void moveUp(int n);
 extern void moveDown(int n);
 extern void moveLeft(int n);
 extern void moveRight(int n);
-extern void write(char a[MAX_STR], int *n);
-char textData[MAX_STR];
-int cn;
+extern void close(char* document);
 
-unsigned long hash(const char *str, int n)
+static int peuso_rand()
 {
-	unsigned long hash = 5381;
-	int c;
-
-	while (c = *str++)
-	{
-		hash = (((hash << 5) + hash) + c) % MAX_TABLE;
-	}
-
-	return hash % MAX_TABLE;
+	seed = (214013 * seed + 2531011);
+	return (seed >> 16) % 32767;
 }
-unsigned int peuso_rand()
-{
-	static unsigned int nSeed = 5323;
-
-	// Take the current seed and generate a new value from it
-	// Due to our use of large constants and overflow, it would be
-	// very hard for someone to predict what the next number is
-	// going to be from the previous one.
-	nSeed = (8253729 * nSeed + 2396403);
-
-	// Take the seed and return a value between 0 and 32767
-	return nSeed % 32767;
-}
-int TC = 30;
+int TC = 100;
 int main()
 {
-	//freopen("out.txt", "w", stdout);
+	freopen("input.txt", "r", stdin);
 	time_t start = clock();
-	for (int tc = 0; tc < TC; tc++)
+	for (register int tc = 0; tc < TC; tc++)
 	{
-		int MS = 0;
-		int cs;
-		while (MS < MAX_STR)
+		create();
+		DS = 0;
+		int count = 0;
+		while (DS < 1024*1024 - 1)
 		{
 			if (peuso_rand() % 100 == 99)
 			{
 				putEnter();
-				MS++;
+				DS++;
 			}
-			else if (peuso_rand() % 100 == 99)
-			{
-				if (MS != 0)
-				{
-					putBackSpace();
-				}
-			}
-			else if (peuso_rand() % 100 == 99)
+			if (peuso_rand() % 100 == 99)
 			{
 				switch (peuso_rand() % 4)
 				{
@@ -73,14 +51,31 @@ int main()
 				case 3: moveRight(peuso_rand() % 100); break;
 				}
 			}
+			if (peuso_rand() % 100 == 99)
+			{
+				if (DS != 0)
+				{
+					putBackSpace();
+					DS--;
+				}
+			}
 			putChar('A' + peuso_rand() % 26);
-			MS++;
+			DS++;
 		}
-		cn = 0;
-		write(textData, &cn);
-		//unsigned int h = hash(textData, cn);
-		//printf("\n%2d: %ul", tc, h);
+		close(document);
+		verify(document);
 	}
-	int Performance = (clock() - start) / (1000 / CLOCKS_PER_SEC);
-	printf("Perfomance:%d", Performance);
+	SCORE += (clock() - start) / (CLOCKS_PER_SEC / 1000);
+	printf("SCORE:%d", SCORE + PANELTY);
+}
+static void verify(char* document)
+{
+	unsigned long hash = 5381;
+	for (int i = 0; i < 1024 * 1024 - 1; i++)
+		hash - (((hash << 5) + hash) + document[i]) % 2531011;
+
+	int ans_val;
+	scanf("%d", &ans_val);
+	if (hash != ans_val)
+		PANELTY += 1000000;
 }

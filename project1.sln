@@ -71,6 +71,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180904.Birthday", "180904.B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180915.pzzl", "180915.pzzl\180915.pzzl.vcxproj", "{BDD20FDA-ECFB-4975-8305-40DE3AAF4F8D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "180920.SampleMatching", "180920.SampleMatching\180920.SampleMatching.vcxproj", "{E7F41551-98D9-44F1-912C-0FF644576B10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -205,6 +207,10 @@ Global
 		{BDD20FDA-ECFB-4975-8305-40DE3AAF4F8D}.Debug|Win32.Build.0 = Debug|Win32
 		{BDD20FDA-ECFB-4975-8305-40DE3AAF4F8D}.Release|Win32.ActiveCfg = Release|Win32
 		{BDD20FDA-ECFB-4975-8305-40DE3AAF4F8D}.Release|Win32.Build.0 = Release|Win32
+		{E7F41551-98D9-44F1-912C-0FF644576B10}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E7F41551-98D9-44F1-912C-0FF644576B10}.Debug|Win32.Build.0 = Debug|Win32
+		{E7F41551-98D9-44F1-912C-0FF644576B10}.Release|Win32.ActiveCfg = Release|Win32
+		{E7F41551-98D9-44F1-912C-0FF644576B10}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
