@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 static char document[1024 * 1024 + 2];
@@ -18,27 +20,30 @@ extern void moveDown(int n);
 extern void moveLeft(int n);
 extern void moveRight(int n);
 extern void close(char* document);
+extern int getTotalChar();
 
 static int peuso_rand()
 {
 	seed = (214013 * seed + 2531011);
-	return (seed >> 16) % 32767;
+	return (seed >> 16) & 32767;
 }
 int TC = 100;
 int main()
 {
-	freopen("input.txt", "r", stdin);
+	freopen("in.txt", "r", stdin);
 	time_t start = clock();
 	for (register int tc = 0; tc < TC; tc++)
 	{
 		create();
 		DS = 0;
 		int count = 0;
+		int char_cnt;
 		while (DS < 1024*1024 - 1)
 		{
 			if (peuso_rand() % 100 == 99)
 			{
 				putEnter();
+				char_cnt = getTotalChar();
 				DS++;
 			}
 			if (peuso_rand() % 100 == 99)
@@ -72,10 +77,18 @@ static void verify(char* document)
 {
 	unsigned long hash = 5381;
 	for (int i = 0; i < 1024 * 1024 - 1; i++)
-		hash - (((hash << 5) + hash) + document[i]) % 2531011;
+	{
+		hash = (((hash << 5) + hash) + document[i]) % 2531011;
+	}
 
 	int ans_val;
 	scanf("%d", &ans_val);
 	if (hash != ans_val)
 		PANELTY += 1000000;
 }
+
+/*
+1239608
+1406054
+1956469
+*/
