@@ -32,5 +32,8 @@
     <ClCompile Include="180827.KeyValueDisk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sol1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
