@@ -18,7 +18,7 @@ extern void put(unsigned char key_in[MAXLEN + 1], unsigned char value_in[MAXLEN 
 extern void del(unsigned char key_in[MAXLEN + 1]);
 extern void get(unsigned char key_in[MAXLEN + 1], unsigned char value_out[MAXLEN+1]);
 extern void getkey(unsigned char value_in[MAXLEN + 1], unsigned char key_out[MAXLEN + 1]);
-extern void my_strncpy(unsigned char* tar, unsigned char* src, int len);
+extern void my_strcpy(unsigned char* tar, unsigned char* src);
 
 bool memread(unsigned char dest[], int pos, int len)
 {
@@ -63,7 +63,8 @@ unsigned long hash_f(const unsigned char *a)
 void get_rand_str(unsigned char*a, unsigned char*b)
 {
 	register int i;
-	for (i = 0; i < MAXLEN; i++)
+	int max_str = rand() % 8 + 5;
+	for (i = 0; i < max_str; i++)
 	{
 		char r1 = rand() % 62;
 		char r2 = rand() % 62;
@@ -75,7 +76,7 @@ void get_rand_str(unsigned char*a, unsigned char*b)
 		else r2 += r2 - 52 + '0';
 		a[i] = r1; b[i] = r2;
 	}
-	a[MAXLEN] = b[MAXLEN] = 0;
+	a[max_str] = b[max_str] = 0;
 }
 void build_map()
 {
@@ -101,12 +102,12 @@ void mix_map()
 	{
 		s = rand() % max_key;
 		t = rand() % max_key;
-		my_strncpy(c1, map[s].k, MAXLEN + 1);
-		my_strncpy(c2, map[s].v, MAXLEN + 1);
-		my_strncpy(map[s].k, map[t].k, MAXLEN + 1);
-		my_strncpy(map[s].v, map[t].v, MAXLEN + 1);
-		my_strncpy(map[t].k, c1, MAXLEN + 1);
-		my_strncpy(map[t].v, c2, MAXLEN + 1);
+		my_strcpy(c1, map[s].k);
+		my_strcpy(c2, map[s].v);
+		my_strcpy(map[s].k, map[t].k);
+		my_strcpy(map[s].v, map[t].v);
+		my_strcpy(map[t].k, c1);
+		my_strcpy(map[t].v, c2);
 	}
 }
 int rp;

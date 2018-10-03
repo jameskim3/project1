@@ -115,7 +115,7 @@ void verify()
 		size = FILE_SIZE[file] - offset;
 
 	read_file(fn, data, offset, size);
-	if (memcmp(data, &FILE_CONTEXT[file][offset], size) != 0)
+	if (size>0 && memcmp(data, &FILE_CONTEXT[file][offset], size) != 0)
 		PENALTY += 1000000;
 }
 
