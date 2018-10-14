@@ -8,7 +8,7 @@ static int FILE_SIZE[100];
 static int TOTAL_SIZE;
 static int DISK_NUM;
 
-extern void insert_file(const char *file_name, const unsigned char *data, int offset, int size);
+extern void insert_file(char *file_name, const unsigned char *data, int offset, int size);
 extern void delete_file(const char *file_name, int offset, int size);
 extern void read_file(const char *file_name, const unsigned char *data, int offset, int size);
 extern void init();
