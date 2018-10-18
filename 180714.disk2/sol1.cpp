@@ -114,49 +114,70 @@ int isEmpty(unsigned char* pos, int len)
 }
 void ins_f(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
-	unsigned char stc[8];
-
 	//file num
 	int fnum = getfilenum(file_name);
 
 	//del possible check
-	int dn, sn;
 	int pos = getDel(size);
 	if (pos == 0)
 		pos = assign(size);
-	dn = pos / 1024;
-	sn = pos % 1024;
 
 	//write index info to file index
+	unsigned char stc[8];
 	setChar(&stc[0], pos, 2);
 	setChar(&stc[2], offset, 2);
 	setChar(&stc[4], size, 2);
-	int h = offset % 1700;
+	int h = offset / 500;
 	int fsect, foff;
 	while (1)
 	{
-		fsect = (F0 + fnum) * 10 + h / 170;
+		fsect = h / 170;
 		foff = (h % 170) * 6;
-		if (isEmpty(&DISK2[0][fsect][foff], 6))
+		if (isEmpty(&DISK2[0][F0 + fnum*10 + fsect][foff], 6))
 			break;
 		h = (h + 1) % 1700;
 	}
-	memcpy2(&DISK2[0][fsect][foff], stc, 6);
+	memcpy2(&DISK2[0][F0 + fnum * 10 + fsect][foff], stc, 6);
 
 	//write real data to disk
-	int pos = 0;
+	int d_pos = 0;
+	int dn = pos / 1024;
+	int sn = pos % 1024;
 	while (size > 0)
 	{
-		memcpy2(&DISK2[dn][sn][0], &data[pos], 1024);
-		pos += (size >= 1024 ? 1024 : size);
-		size -= 1024;
+		memcpy2(&DISK2[dn][sn][0], &data[d_pos], 1024);
+		d_pos += (size >= 1024 ? 1024 : size);
+		size -= 1024; pos++;
 		dn = pos / 1024;
 		sn = pos % 1024;
 	}
 }
+int isMatch(unsigned char* tar, int offset)
+{
+	int org_off = getInt(&tar[2], 2);
+	int org_size = getInt(&tar[4], 2);
+	if (offset >= org_off && offset < org_off + org_size)
+		return 1;
+	return 0;
+}
 int findOffsetPos(int fnum, int offset, unsigned char* stc, int *idx_pos)
 {
-
+	int dn = 0;
+	int sn = 0;
+	unsigned char stc[8];
+	int h = offset / 500;
+	int fsect, foff;
+	while (1)
+	{
+		fsect = h / 170;
+		foff = (h % 170) * 6;
+		if (isMatch(&DISK2[0][F0 + fnum * 10 + fsect][foff], offset))
+			break;
+		h = (h + 1) % 1700;
+	}
+	memcpy2(stc, &DISK2[0][F0 + fnum * 10 + fsect][foff], 6);
+	*idx_pos = h;
+	return fsect * 170 + foff;
 }
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
@@ -182,7 +203,7 @@ void insert_file(unsigned char *file_name, unsigned char *data, int offset, int 
 
 	f_size -= diff;
 	setChar(&stc[4], f_size, 2);
-	int fsect = (F0 + fnum) * 10 + idx_pos / 170;
+	int fsect = F0 + fnum * 10 + idx_pos / 170;
 	int foff = (idx_pos % 170) * 6;
 	memcpy2(&DISK2[0][fsect][foff], stc, 6);
 }
