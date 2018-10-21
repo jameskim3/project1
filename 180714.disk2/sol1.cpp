@@ -1,7 +1,7 @@
 extern void _write_data(int sector, unsigned char* data, int size);
 extern void _read_data(int sector, unsigned char* data);
 extern void _change_disk(int disk);
-const int FILE = 0;
+const int DN0 = 15;
 const int INS = 10;//ins2, del1~del4 18, fileheader 18~228
 const int DEL1 = 11;//del heap
 const int DEL2 = 12;
@@ -13,6 +13,8 @@ int div = 1000;
 int ins_cnt[100];
 int del_cnt[100];
 static unsigned char DISK2[16][1024][1024];
+void delete_file(unsigned char *file_name, int offset, int size);
+
 
 int hash_f(unsigned char* fn, int len)
 {
@@ -43,14 +45,14 @@ void memcpy2(unsigned char* tar, unsigned char* src, int len)
 }
 int getfilenum(unsigned char* fn)
 {
-	int dn = 0;
+	int dn = DN0;
 	int sn = 0;
 	int on = 0;
 	int fh = hash_f(fn,16)%div;
 	int cnt = 0;
 	while (1)
 	{
-		dn = 0;
+		dn = DN0;
 		sn = fh / 100;
 		on = fh % 100;
 		if (DISK2[dn][sn][on * 10] != 0 && memcmp2(fn, &DISK2[dn][sn][on * 10], 10))
@@ -89,9 +91,17 @@ int getDel(int size)
 {
 	int jn = (size - 1) / 1024 ;
 	int pos = getInt(&DISK2[0][DEL1+jn][0], 2);
-	if (pos == 0)return 0;
-	setChar(&DISK2[0][DEL1 + jn][0], pos-1, 2);
-	return pos;
+	if (pos < 2)return 0;
+	int pos2 = getInt(&DISK2[0][DEL1 + jn][(pos-1)*2], 2);
+	setChar(&DISK2[0][DEL1 + jn][0], pos - 1, 2);
+	return pos2;
+}
+void assignDel(int pos, int size)
+{
+	int jn = (size - 1) / 1024;
+	int pos_idx = getInt(&DISK2[0][DEL1 + jn][0], 2);
+	setChar(&DISK2[0][DEL1 + jn][pos_idx * 2], pos, 2);
+	setChar(&DISK2[0][DEL1 + jn][0], pos_idx + 1, 2);
 }
 int assign(int size)
 {
@@ -162,7 +172,7 @@ int isMatch(unsigned char* tar, int offset)
 }
 int findOffsetPos(int fnum, int offset, unsigned char* stc, int *idx_pos)
 {
-	int dn = 0;
+	int dn = DN0;
 	int sn = 0;
 	unsigned char stc[8];
 	int h = offset / 500;
@@ -179,12 +189,11 @@ int findOffsetPos(int fnum, int offset, unsigned char* stc, int *idx_pos)
 	*idx_pos = h;
 	return fsect * 170 + foff;
 }
+void updateOffset(int fnum, int offset, int size)
+{}
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
-	ins_f(file_name, data, offset, size);
-
 	//offset patch devide
-	//file num
 	int fnum = getfilenum(file_name);
 	unsigned char stc[8];
 
@@ -197,15 +206,24 @@ void insert_file(unsigned char *file_name, unsigned char *data, int offset, int 
 	int dn = f_pos / 1024; 
 	int sn = f_pos % 1024;
 	memcpy2(tmp, DISK2[dn][sn], f_size);	
-	
-	int diff = offset - f_offset;
-	ins_f(file_name, &tmp[diff], offset + size, f_size - diff);
 
-	f_size -= diff;
-	setChar(&stc[4], f_size, 2);
-	int fsect = F0 + fnum * 10 + idx_pos / 170;
+	//del index
+	unsigned char stc2[8] = { 0 };
+	int fsect = idx_pos / 170;
 	int foff = (idx_pos % 170) * 6;
-	memcpy2(&DISK2[0][fsect][foff], stc, 6);
+	memcpy2(&DISK2[DN0][F0 + fnum * 10 + fsect][foff], stc2, 6);
+
+	//del real file
+	delete_file(file_name, f_offset, f_size);
+
+	//add split
+	int diff = offset - f_offset;
+	ins_f(file_name, &tmp[0], f_offset, diff);
+	ins_f(file_name, &tmp[diff], offset, f_size - diff);
+
+	//add new data
+	updateOffset(fnum, offset, size);
+	ins_f(file_name, data, offset, size);
 }
 void delete_file(unsigned char *file_name, int offset, int size)
 {
