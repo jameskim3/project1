@@ -87,10 +87,22 @@ void setChar(unsigned char* tar, int val, int len)
 		val /= 256;
 	}
 }
-int insertPatch(int root, unsigned char data, int offset, int size)
+int insertPatch(int root, unsigned char* data, int offset, int size)
 {
 	int p = 0;
 	memcpy2(f_info, &DISK2[DN0][SROOT0][0], 1024);
+}
+int getPatch(int pos, int offset)
+{
+	unsigned char f_info[1024] = { 0 };
+	while (1)
+	{
+		int dn = pos / 1024;
+		int sn = pos % 1024;
+		memcpy2(f_info, &DISK2[dn][sn][0], 1024);
+		if (offset)
+	}
+	
 }
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
@@ -98,22 +110,65 @@ void insert_file(unsigned char *file_name, unsigned char *data, int offset, int 
 	unsigned char f_info[1024] = { 0 };
 	memcpy2(f_info, &DISK2[DN0][SROOT0][0], 1024);
 
-	int root = getInt(&f_info[fnum*2], 2);
+	int root = getInt(&f_info[fnum * 2], 2);
 	if (root == 0)
 	{
 		int p = insertPatch(root, data, offset, size);
-		insert_node(root, p, 0);
+		setChar(&f_info[fnum * 2], p, 2);
+		memcpy2(&DISK2[DN0][SROOT0][0], f_info, 1024);;
 		return;
 	}
 	int pos = getPatch(root, offset);
 	int l_off, r_off, l_size, r_size;
 	unsigned char l_data[4096], r_data[4096];
-	split_patch(pos, &l_off, &r_off, &l_size, &r_size, l_data, r_data);
+	split_patch(pos, offset, &l_off, &r_off, &l_size, &r_size, l_data, r_data);
+	delPatch(fnum, pos);
 	int p1 = insertPatch(root, l_data, l_off, l_size);
 	int p2 = insertPatch(root, r_data, r_off, r_size);
-	delPatch(fnum, pos);
 	int p = insertPatch(root, data, offset, size);
 	insert_node(p1, p, p2);
+}
+void delete_file(const char *file_name, int offset, int size)
+{
+	int fnum = getfilenum(file_name);
+	unsigned char f_info[1024] = { 0 };
+	memcpy2(f_info, &DISK2[DN0][SROOT0][0], 1024);
+
+	int root = getInt(&f_info[fnum * 2], 2);
+	if (root == 0)
+		return;
+	int pos = getPatch(root, offset);
+	int l_off, r_off, l_size, r_size;
+	unsigned char l_data[4096], r_data[4096];
+	split_patch(pos, offset, &l_off, &r_off, &l_size, &r_size, l_data, r_data);
+	delPatch(fnum, pos);
+	int p1 = insertPatch(root, l_data, l_off, l_size);
+	int p2 = insertPatch(root, r_data, r_off, r_size);
+
+	int remain = size;
+	int offset_temp = r_off;
+	while (remain > 0)
+	{
+		if (r_size < size)
+		{
+			pos = getPatch(root, r_off);
+			int dn = pos / 1024;
+			int sn = pos % 1024;
+			p2 = getInt(&DISK2[dn][sn][6], 2);
+			dn = p2 / 1024;
+			sn = p2 % 1024;
+			r_off = getInt(&DISK2[dn][sn][2], 2);
+			delPatch(fnum, pos);
+			remain -= r_size;
+		}
+		else
+		{
+			split_patch(pos, r_off + r_size, &l_off, &r_off, &l_size, &r_size, l_data, r_data);
+			delPatch(fnum, pos);
+			p2 = insertPatch(root, r_data, r_off, r_size);
+		}
+	}
+	insert_node(p1, 0, p2);
 }
 void init()
 {
