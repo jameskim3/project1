@@ -87,22 +87,68 @@ void setChar(unsigned char* tar, int val, int len)
 		val /= 256;
 	}
 }
-int insertPatch(int root, unsigned char* data, int offset, int size)
+int insertPatch(int fnum, unsigned char* data, int offset, int size)
 {
 	int p = 0;
-	memcpy2(f_info, &DISK2[DN0][SROOT0][0], 1024);
+	unsigned char f_info[1024] = { 0 };
+	memcpy2(f_info, &DISK2[DN0][SIN][0], 1024);
+	int pos = getInt(f_info, 2);
+	int dn = pos / 1024;
+	int sn = pos % 1024;
+
+	unsigned char header[10] = { 0 };
+	setChar(&header[0], fnum, 2);
+	setChar(&header[2], offset, 2);
+	setChar(&header[4], size, 2);
+	setChar(&header[6], 0, 2);
+	setChar(&header[8], 0, 2);
+
+	int sector_size = ((size + 10 - 1) / 1024)+1;
+	if (sector_size + sn > 1024)
+	{
+		dn++, sn = 0;
+	}
+	memcpy2(&DISK2[dn][sn][0], header, 10);
+	memcpy2(&DISK2[dn][sn][10], data, size);
+
+	pos = dn * 1024 + sn + sector_size;
+	return pos;
 }
 int getPatch(int pos, int offset)
 {
 	unsigned char f_info[1024] = { 0 };
+	int offset2, size2, next2;
 	while (1)
 	{
 		int dn = pos / 1024;
 		int sn = pos % 1024;
 		memcpy2(f_info, &DISK2[dn][sn][0], 1024);
-		if (offset)
+		offset2 = getInt(&f_info[2], 2);
+		size2 = getInt(&f_info[4], 2);
+		if (offset2 <= offset && (offset2 + size2) > offset)
+			break;
+		pos = getInt(&f_info[6], 2);
 	}
-	
+	return pos;
+}
+void split_patch(int pos, int offset, int *l_off, int *r_off, int *l_size, int *r_size, unsigned char *l_data, unsigned char *r_data)
+{
+	int pos2 = getPatch(pos, offset);
+	unsigned char f_info[1024] = { 0 };
+	int dn = pos2 / 1024;
+	int sn = pos2 % 1024;
+	memcpy2(f_info, &DISK2[dn][sn][0], 1024);
+
+	int origin_size = getInt(&f_info[2], 4);
+	*l_off = getInt(&f_info[2], 2);
+	*r_off = offset;
+	*l_size = offset - (*l_off);
+	*r_size = origin_size - (*l_size);
+
+	unsigned char raw[4096 + 100] = { 0 };
+	memcpy2(raw, &DISK2[dn][sn][10], origin_size);
+	memcpy2(l_data, raw, *l_size);
+	memcpy2(r_data, &raw[*l_size], *r_size);
 }
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
