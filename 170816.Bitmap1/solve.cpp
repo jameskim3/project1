@@ -1,6 +1,3 @@
-
-
-
 #define NN 4096 
 #define NM 256 
 

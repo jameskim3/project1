@@ -150,6 +150,14 @@ void split_patch(int pos, int offset, int *l_off, int *r_off, int *l_size, int *
 	memcpy2(l_data, raw, *l_size);
 	memcpy2(r_data, &raw[*l_size], *r_size);
 }
+void delPatch(int fnum, int pos)
+{
+
+}
+void insert_node(int a, int b, int c)
+{
+
+}
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size)
 {
 	int fnum = getfilenum(file_name);
@@ -174,7 +182,7 @@ void insert_file(unsigned char *file_name, unsigned char *data, int offset, int 
 	int p = insertPatch(root, data, offset, size);
 	insert_node(p1, p, p2);
 }
-void delete_file(const char *file_name, int offset, int size)
+void delete_file(unsigned char *file_name, int offset, int size)
 {
 	int fnum = getfilenum(file_name);
 	unsigned char f_info[1024] = { 0 };

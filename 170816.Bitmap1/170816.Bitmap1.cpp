@@ -117,8 +117,8 @@ int main(void)
 	for (register int TC = 0; TC < TCSIZE; TC++)
 	{
 		noise(bitmap[TC]);
-		rotate(bitmap[TC], 1);// rand() % 4);
-		flip(bitmap[TC], 1);// rand() % 3);
+		rotate(bitmap[TC], rand() % 4);
+		flip(bitmap[TC], rand() % 3);
 	}
 
 	start = clock();

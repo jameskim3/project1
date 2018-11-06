@@ -8,9 +8,9 @@ static int FILE_SIZE[100];
 static int TOTAL_SIZE;
 static int DISK_NUM;
 
-extern void insert_file(char *file_name, const unsigned char *data, int offset, int size);
-extern void delete_file(const char *file_name, int offset, int size);
-extern void read_file(const char *file_name, const unsigned char *data, int offset, int size);
+extern void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size);
+extern void delete_file(unsigned char *file_name, int offset, int size);
+extern void read_file(unsigned char *file_name, unsigned char *data, int offset, int size);
 extern void init();
 
 void _write_data(int sector, unsigned char* data, int size)
@@ -52,7 +52,7 @@ int INSERT_SIZE = 4096;
 void insert_data()
 {
 	int file = rand() % 100;
-	char fn[16];
+	unsigned char fn[16];
 	for (int i = 0; i < 16; i++)
 		fn[i] = FILE_NAME[file][i];
 
@@ -78,7 +78,7 @@ void delete_data()
 {
 	int file = rand() % 100;
 	if (FILE_SIZE[file] == 0)return;
-	char fn[16];
+	unsigned char fn[16];
 	for (int i = 0; i < 16; i++)
 		fn[i] = FILE_NAME[file][i];
 
@@ -103,7 +103,7 @@ void delete_data()
 void verify()
 {
 	int file = rand() % 100;
-	char fn[16];
+	unsigned char fn[16];
 	for (int i = 0; i < 16; i++)
 		fn[i] = FILE_NAME[file][i];
 
@@ -114,7 +114,7 @@ void verify()
 	if (size + offset > FILE_SIZE[file])
 		size = FILE_SIZE[file] - offset;
 
-	read_file(fn, data, offset, size);
+	//read_file(fn, data, offset, size);
 	if (size>0 && memcmp(data, &FILE_CONTEXT[file][offset], size) != 0)
 		PENALTY += 1000000;
 }

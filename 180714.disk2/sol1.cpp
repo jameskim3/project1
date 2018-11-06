@@ -174,7 +174,6 @@ int findOffsetPos(int fnum, int offset, unsigned char* stc, int *idx_pos)
 {
 	int dn = DN0;
 	int sn = 0;
-	unsigned char stc[8];
 	int h = offset / 500;
 	int fsect, foff;
 	while (1)
@@ -237,8 +236,6 @@ void delete_file(unsigned char *file_name, int offset, int size)
 	}
 
 }
-void read_file(const char *file_name, const unsigned char *data, int offset, int size)
-{}
 void init()
 {
 	for (int dn = 0; dn < 16; ++dn)
@@ -250,4 +247,8 @@ void init()
 		ins_cnt[i] = 0;//150
 		del_cnt[i] = 0;//100
 	}
+}
+void read_file(unsigned char *file_name, unsigned char *data, int offset, int size)
+{
+
 }

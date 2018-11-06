@@ -35,5 +35,11 @@
     <ClCompile Include="sol1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sol_181102_basic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sol_181102.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
