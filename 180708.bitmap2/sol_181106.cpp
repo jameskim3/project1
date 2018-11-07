@@ -42,8 +42,13 @@ void decode(char TMP[][100], char TAR[100])
 	int csum[100] = { 0 };
 	
 	int cnt_1 = 0;
-	int off_y[2] = { -1 };
-	int off_x[2] = { -1 };
+	int off_y[2];
+	int off_x[2];
+	for (int i = 0; i < 2; i++)
+	{
+		off_y[i] = -1;
+		off_x[i] = -1;
+	}
 	for (int i = 0; i < 100; i++)
 	{
 		for (int j = 0; j < 100; j++)
@@ -110,32 +115,44 @@ void decode(char TMP[][100], char TAR[100])
 		}
 	}
 
-	int off_x = off_x[0];
-	int off_y = off_y[0];
 	int even_x = off_x[1] == -1 ? 0 : 1;
 	int even_y = off_y[1] == -1 ? 0 : 1;
-	int b, x, y;
+	int ox = even_x ? off_x[0]+2 : off_x[0] + 1;
+	int oy = off_y[0] + 2;
+	int b, x, y, r, c;
 	int tmp, cnt;
 	cnt = 0;
+	int jy= 0;
+	int sy = 0;
 	for (int i = 0; i < 100; i++)
 	{
-		tmp = TMP[i] - 'A';
+		b = 0;
 		for (int j = 0; j < 5; j++)
 		{
-			b = (tmp >> j) & 1;
-			x = (cnt * 6) % 96;
-			y = (cnt * 6) / 96;
-			y *= 3;
-			x += off_x;
-			y += off_y;
-			for (int s = 0; s < 3; s++)
+			int local = 0;
+			for (int k = 0; k < 3; k++, cnt++)
 			{
-				for (int t = 0; t < 6; t++)
+				if (even_x == 0 && k == 0)continue;
+				y = cnt / 48;
+				x = cnt % 48;
+
+				if (y > 0 && x == 0)
 				{
-					QRC[y + s][x + t] = b;
+					if (even_y == 1 && y % 2 == 1)
+						jy++;
+					if (even_x == 0 && y % 2 == 0)
+						jy++;
 				}
+
+				local += TMP[oy+y+jy][ox+x + k];
 			}
-			cnt++;
+			int bit = 0;
+			if (even_x == 0 && local == 12) 
+				bit = 1;
+			else if (even_x == 1 && local == 8)
+				bit = 1;
+			if (bit) b += 0x01 << j;
 		}
+		TAR[i] = 'A' + b;
 	}
 }
