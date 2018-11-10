@@ -13,7 +13,7 @@ extern  void encode(char TMP[100], char QRC[][100]);
 extern  void decode(char TMP[][100], char TAR[100]);
 int main()
 {
-	srand(33);
+	srand(3);
 
 	for (int t = 0; t < TC; t++)
 	{
