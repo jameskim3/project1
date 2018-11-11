@@ -55,7 +55,7 @@ int main()
 
 		init(N, src);
 
-		for (j = 0; j < 1; j++)
+		for (j = 0; j < 40000; j++)
 		{
 			remove(rand() % 3);//0 MIN, 1 MAX, 2 MID
 			add(new_participant());
@@ -63,12 +63,8 @@ int main()
 			getsum2(&u, &v);
 			result = (result + u + v) % 10003;
 		}
-		//getsum2(&u, &v);
-		//printf("u,v: %d %d\n", u, v);
 
 		performance = clock() - s;
-		//for (i = 0; i < N; i++)
-		//	printf("%d ", src[i].preference);
 		printf("\n#%d : %d %d\n", tc + 1, result, performance);
 	}
 }
