@@ -173,7 +173,6 @@ void init(int n, PARTICIPANT src[])
 		tmp->id = src[i].id;
 		tmp->preference = src[i].preference;
 		addSum(tmp);
-
 	}
 }
 void removeHeap(MyPARTICIPANT* p)
@@ -198,6 +197,13 @@ void remove(int opt)//0 MIN, 1 MAX, 2 MID
 		MyPARTICIPANT* next_min_pos = getnext(min_pos);
 		removeHeap(min_pos);
 		min_pos = next_min_pos;
+		if (total_sum % 2 == 0)
+		{
+			MyPARTICIPANT* newmid = getnext(mid);
+			low_sum += newmid->preference;
+			high_sum -= newmid->preference;
+			mid = newmid;
+		}
 		total_sum--;
 	}
 	else if (opt == 1)
@@ -206,6 +212,13 @@ void remove(int opt)//0 MIN, 1 MAX, 2 MID
 		MyPARTICIPANT* pre_max_pos = getpre(max_pos);
 		removeHeap(max_pos);
 		max_pos = pre_max_pos;
+		if (total_sum % 2 == 1)
+		{
+			MyPARTICIPANT* newmid = getpre(mid);
+			high_sum += mid->preference;
+			low_sum -= mid->preference;
+			mid = newmid;
+		}
 		total_sum--;
 	}
 	else

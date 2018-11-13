@@ -17,8 +17,11 @@ int gLowSum;
 int gHighSum;
 void addHeap(PARTICIPANT2* p)
 {
-	if (heap[p->preference] == 0)
+	if (heap[p->preference] == 0 || heap[p->preference]->id > p->id)
+	{
+		p->next = heap[p->preference];
 		heap[p->preference] = p;
+	}
 	else
 	{
 		PARTICIPANT2* iter = heap[p->preference];
@@ -31,14 +34,13 @@ void addHeap(PARTICIPANT2* p)
 void removeHeap(PARTICIPANT2* p)
 {
 	if (heap[p->preference] == p)
-		heap[p->preference] = 0;
+		heap[p->preference] = heap[p->preference]->next;
 	else
 	{
 		PARTICIPANT2* iter = heap[p->preference];
 		while (iter->next->id != p->id)
 			iter = iter->next;
 		iter->next = p->next;
-		iter->next = p;
 	}
 }
 int compare(PARTICIPANT2* a, PARTICIPANT2* b)
@@ -147,8 +149,9 @@ void init(int n, PARTICIPANT src[])
 		heap[i] = 0;
 	for (i = 0; i < rp; i++)
 	{
-		nd[i].id = 0; nd[i].preference = 0;
+		nd[i].id = 0; nd[i].preference = 0; nd[i].next = 0;
 	}
+	rp = 0;
 	mid = 0;
 	low = 0;
 	high = 0;
@@ -186,12 +189,34 @@ void remove(int pre)
 		high = newhigh;
 		if (gTotal % 2 == 1)
 		{
-			PARTICIPANT2* newmid = getnext(mid);
+			PARTICIPANT2* newmid = getpre(mid);
 			gHighSum += mid->preference;
 			gLowSum -= mid->preference;
 			mid = newmid;
 		}
 		gTotal--;
+	}
+	else
+	{
+		if (gTotal % 2 == 0)
+		{
+			PARTICIPANT2* premid = getpre(mid);
+			PARTICIPANT2* nextmid = getnext(mid);
+			gLowSum -= mid->preference;
+			gHighSum -= nextmid->preference;
+			removeHeap(mid);
+			removeHeap(nextmid);
+			mid = premid;
+			gTotal -= 2;
+		}
+		else
+		{
+			PARTICIPANT2* premid = getpre(mid);
+			gLowSum -= mid->preference;
+			removeHeap(mid);
+			mid = premid;
+			gTotal -= 1;
+		}
 	}
 }
 void add(PARTICIPANT tar)

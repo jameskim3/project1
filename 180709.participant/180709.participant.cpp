@@ -65,6 +65,6 @@ int main()
 		}
 
 		performance = clock() - s;
-		printf("\n#%d : %d %d\n", tc + 1, result, performance);
+		printf("#%d : %d %d\n", tc + 1, result, performance);
 	}
 }
