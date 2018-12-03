@@ -171,23 +171,25 @@ int heapPush(int se, int id, int value, int pos, int visited)
 }
 void init(int L, int N, int C, int axis[MAxServer])
 {
+	heapInit();
 	LE = L, NU = N, CL = C;
 	for (int i = 0; i < NU; i++){
 		AXIS[i] = axis[i];
 	}
-	for (int i = 0; i < rp; i++){
-		nd[i].id = 0, nd[i].se = 0;
-	}
 	rp = 0;
 }
 int abs(int a){ return a>0 ? a : -a; }
+int myMin(int a, int b){ return a > b ? b : a; }
 int add_user(int uid, int axis){
 	ND* tmp = &nd[rp++];
 	int se_dist[10], se_order[10];
 	for (int i = 0; i < NU; i++){
 		int d1 = abs(AXIS[i] - axis);
 		int d2 = axis + (LE - AXIS[i]);
-		tmp->se_dist[i] = d1 > d2 ? d2 : d1;
+		int d3 = (LE - axis) + AXIS[i];
+		int min = myMin(d1, d2);
+		min = myMin(min, d3);
+		tmp->se_dist[i] = min;
 		tmp->se_order[i] = i;
 	}
 	for (int i = 0; i < NU; i++){
