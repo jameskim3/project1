@@ -86,6 +86,7 @@
     <ClCompile Include="181203.PuzzleShift.cpp" />
     <ClCompile Include="sol_181203.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="white_review.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

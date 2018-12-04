@@ -35,5 +35,8 @@
     <ClCompile Include="sol_181203.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="white_review.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

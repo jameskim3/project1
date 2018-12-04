@@ -1,4 +1,5 @@
 #include<iostream>
+#include<time.h>
 int board[5][5];
 int map[3][3];
 extern void run(int board[5][5], int map[3][3]);
@@ -55,18 +56,13 @@ int shift(int y,int x, int dir){
 	return 1;
 }
 int main(){
-	int TC = 10;
+	time_t start = clock();
+	int TC = 50000;
+	int SCORE = 0;
+	double SHIFT_AVG = 0.;
 	for (int tc = 0; tc < TC; tc++){
 		mixBoard();
 		buildMap();
-		//for (int i = 0; i < 25; i++){
-		//	printf("%d ", board[i]);
-		//	if ((i + 1) % 5 == 0)printf("\n");
-		//}
-		//for (int i = 0; i < 9; i++){
-		//	printf("%d ", map[i]);
-		//	if ((i + 1) % 3 == 0)printf("\n");
-		//}
 		shift_cnt = 0;
 		run(board,map);
 		int score = 100;
@@ -75,7 +71,12 @@ int main(){
 				if (board[y + 1][x + 1] != map[y][x])score = 0;
 			}
 		}
-
-		printf("#%d %d %d\n",tc+1,score,shift_cnt);
+		//printf("#%d %d %d\n",tc+1,score,shift_cnt);
+		SHIFT_AVG += double(shift_cnt);
+		if (score == 100 && shift_cnt < 500)
+			SCORE += 2;
 	}
+	time_t end= clock();
+	printf("Score:%d, SHIFT=%.3f Performance:%d\n", SCORE, SHIFT_AVG/TC, end - start);
+
 }
