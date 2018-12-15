@@ -1,14 +1,15 @@
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
-typedef struct st
+struct CAR
 {
 	int age;//0~20
 	int passenger;//2~12
 	int engine;//1000~5000
 	int price;//10000~40000
-} CAR;
+} ;
 
 const int TS = 10;
 const int MC = 10000;// 10000;
@@ -17,8 +18,8 @@ void build_car(CAR &car)
 {
 	car.age = rand() % 21;
 	car.passenger = rand() % 11 + 2;
-	car.engine = rand() % 4000 + 1000;
-	car.price = rand() % 30000 + 10000;
+	car.engine = rand() % 4001 + 1000;
+	car.price = rand() % 30001 + 10000;
 }
 extern void buy_car(CAR car);
 extern void sort_age(int from, int to);
@@ -36,6 +37,7 @@ int main()
 	int order_no = 0;//�뷫 100ȸ
 	int save_order_no = -1;
 
+	time_t start = clock();
 	for (int tc = 1; tc <= 10; tc++)
 	{
 		for (int mc = 1; mc <= MC; mc++)
@@ -43,7 +45,8 @@ int main()
 			build_car(tmpCar);
 			buy_car(tmpCar);
 
-			if (rand() % 100 == 0)
+			//if (rand() % 100 == 0)
+			if (rand() % 10 == 0)
 			{
 				sort_age(rand() % 21, rand() % 21);
 				sort_pass(rand() % 11 + 2, rand() % 11 + 2);
@@ -67,7 +70,8 @@ int main()
 
 		printf("TC#%d = %d\n", tc, empty_car());
 	}
-
+	time_t end = clock();
+	printf("Performance = %d\n", end-start);
 	return 0;
 }
 

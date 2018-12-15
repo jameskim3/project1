@@ -29,16 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="170202.UsedCar.cpp">
+    <ClCompile Include="181212.Schedule3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sol_181115.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol_181116.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol_AllCase.cpp">
+    <ClCompile Include="sol_181212.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
