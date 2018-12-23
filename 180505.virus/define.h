@@ -4,6 +4,7 @@
 typedef struct node
 {
 	int id, size, origin;
+	int isFolder;
 	node* parent;
 	node* child;
 	node* next;

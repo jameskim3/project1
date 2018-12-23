@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-
+#include<time.h>
 #define N 4
 #define MAX_QUERYCOUNT 1000000
 static int digits[N];
@@ -54,14 +54,26 @@ Result query(int guess[])
 			result.ball++;
 	return result;
 }
+//static void initialize(){
+//	for (int count = 0; count < 10; ++count)
+//		digits_c[count] = 0;
+//	for (int idx = 0; idx < N; ++idx){
+//		char c;
+//		do scanf("%c", &c); while (c<'0' || c>'9');
+//		digits[idx] = c - '0';
+//		digits_c[digits[idx]]++;
+//	}
+//	querycount = 0;
+//}
 static void initialize(){
 	for (int count = 0; count < 10; ++count)
 		digits_c[count] = 0;
-	for (int idx = 0; idx < N; ++idx){
-		char c;
-		do scanf("%c", &c); while (c<'0' || c>'9');
-		digits[idx] = c - '0';
-		digits_c[digits[idx]]++;
+	for (int idx = 0; idx < N; ){
+		int c = rand() % 10;
+		if (digits_c[c] > 0)continue;
+		digits[idx] = c;
+		digits_c[c]++;
+		++idx;
 	}
 	querycount = 0;
 }
@@ -71,6 +83,7 @@ static bool check(int guess[]){
 	return true;
 }
 int main() {
+	time_t s = clock();
 	int total_score = 0;
 	int total_querycount = 0;
 	freopen("in.txt", "r", stdin);
@@ -84,11 +97,13 @@ int main() {
 		if (!check(guess))querycount = MAX_QUERYCOUNT;
 		if (querycount <= limit_query)
 			total_score++;
-		printf("#%d %d", testcase, querycount);
+		printf("#%d %d\n", testcase, querycount);
 		total_querycount += querycount;
 	}
 	if (total_querycount > MAX_QUERYCOUNT)
 		total_querycount = MAX_QUERYCOUNT;
-	printf("total score=%d totla query=%d", total_score * 100 / T, total_querycount);
+	time_t e = clock();
+	int PERFORM = e - s;
+	printf("Performance:%d total score=%d totla query=%d\n", PERFORM, total_score * 100 / T, total_querycount);
 	return 0;
 }
