@@ -29,10 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="170816.Puzzle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="solve.cpp">
+    <ClCompile Include="160808.puzzle1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sol_181224.cpp">
