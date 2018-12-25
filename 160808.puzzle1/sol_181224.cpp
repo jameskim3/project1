@@ -5,13 +5,12 @@ now i try to solve it in dfs
 */
 //32
 const int BLOCK = 32;
+const int X = 2048/4;
+const int Y = 2048/4;
+const int N = 100/4;
 //64
-const int BCNT = 64;
-//4096
+const int BCNT = X / BLOCK;
 const int ALL_BLK = BCNT*BCNT;
-const int X = 2048;
-const int Y = 2048;
-const int N = 100;
 
 struct BL{
 	int chk[4];
@@ -24,7 +23,7 @@ BL ND[BCNT][BCNT];
 int MyPath[ALL_BLK];
 int AnsPath[ALL_BLK];
 int AnsCnt;
-int visited[BCNT][BCNT];
+int visited[ALL_BLK];
 int isSameLine(int* sl, int* tl){
 	for (int i = 0; i < BLOCK; i++){
 		if (sl[i] != tl[i])return 0;
@@ -57,7 +56,7 @@ void swap(int src, int tar)
 	int sy, sx, ty, tx;
 	sy = src / BCNT, sx = src % BCNT;
 	ty = tar / BCNT, tx = tar % BCNT;
-	sy *= BLOCK, sx *= BLOCK, ty *= BLOCK, ty *= BLOCK;
+	sy *= BLOCK, sx *= BLOCK, ty *= BLOCK, tx *= BLOCK;
 	for (int y = 0; y < BLOCK; y++) {
 		for (int x = 0; x < BLOCK; x++) {
 			int t = Mybitmap[sy + y][sx + x];
@@ -95,22 +94,63 @@ void dfs(int n){
 		return;
 	}
 	//condition
-	for (int i = 0; i < BCNT; i++){
-		for (int j = 0; j < BCNT; j++){
-			if (visited[i][j])continue;
-			if (n < BCNT && ND[i][j].chk[0]>0)continue;
-			if (n % BCNT == 0 && ND[i][j].chk[3]>0)continue;
-			if (n >= BCNT * (BCNT-1) && ND[i][j].chk[1]>0)continue;
-			if (n % BCNT == (BCNT-1) && ND[i][j].chk[2]>0)continue;
-			int up = n - BCNT;
-			if (up >= 0 && !isMember(MyPath[up], i * BCNT + j, 0))continue;
-			int left = n - 1;
-			if (left >= 0 && left % BCNT != (BCNT - 1) && !isMember(MyPath[left], i * BCNT + j, 1))continue;
-			MyPath[n] = i * BCNT + j;
-			visited[i][j] = 1;
+	int uy, ux, ly, lx;
+	int uchk, lchk;
+	uchk = lchk = 1;
+	if (n % BCNT == 0) lchk = 0;
+	if (n < BCNT) uchk = 0;
+
+	int left = lchk? MyPath[n - 1] : -1;
+	int up = uchk ? MyPath[n - BCNT] : -1;
+	uy = up / BCNT, ux = up % BCNT;
+	ly = left / BCNT, lx = left % BCNT;
+
+	if (lchk && uchk){
+		for (int i = 0; i < ND[ly][lx].rc; i++){
+			for (int j = 0; j < ND[uy][ux].dc; j++){
+				if (ND[ly][lx].right[i] == ND[uy][ux].down[j]){
+					int tp = ND[ly][lx].right[i];
+					if (visited[tp])continue;
+					MyPath[n] = tp;
+					visited[tp] = 1;
+					dfs(n + 1);
+					if (AnsCnt > 0)return;
+					visited[tp] = 0;
+				}
+			}
+		}
+	}
+	else if (lchk){
+		for (int i = 0; i < ND[ly][lx].rc; i++){
+			int tp = ND[ly][lx].right[i];
+			if (visited[tp])continue;
+			MyPath[n] = tp;
+			visited[tp] = 1;
 			dfs(n + 1);
 			if (AnsCnt > 0)return;
-			visited[i][j] = 0;
+			visited[tp] = 0;
+		}
+	}
+	else if (uchk){
+		for (int i = 0; i < ND[uy][ux].dc; i++){
+			int tp = ND[uy][ux].down[i];
+			if (visited[tp])continue;
+			MyPath[n] = tp;
+			visited[tp] = 1;
+			dfs(n + 1);
+			if (AnsCnt > 0)return;
+			visited[tp] = 0;
+		}
+	}
+	else{
+		for (int i = 0; i < ALL_BLK; i++){
+			int tp = i;
+			if (visited[tp])continue;
+			MyPath[n] = tp;
+			visited[tp] = 1;
+			dfs(n + 1);
+			if (AnsCnt > 0)return;
+			visited[tp] = 0;
 		}
 	}
 }
@@ -141,16 +181,14 @@ void test(char bitmap[][X]){
 	}
 	makeDic();
 	AnsCnt = 0;
-	for (int i = 0; i < BCNT; i++){
-		for (int j = 0; j < BCNT; j++){
-			visited[i][j] = 0;
-		}
+	for (int i = 0; i < ALL_BLK; i++){
+		visited[i]= 0;
 	}
 	dfs(0);
 	int cnt = 0;
 	while (cnt < ALL_BLK - 1){
 		int tar = AnsPath[cnt];
-		for (int i = 0; i < BCNT; i++){
+		for (int i = 0; i < ALL_BLK; i++){
 			if (tar == i){
 				swap(cnt, i);
 				break;

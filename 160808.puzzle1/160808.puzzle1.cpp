@@ -7,9 +7,9 @@
 //2048 64 
 using namespace std;
 const int BLOCK = 32;
-const int X = 2048;
-const int Y = 2048;
-const int N = 2000;
+const int X = 2048/4;
+const int Y = 2048/4;
+const int N = 1000/4;
 
 extern void test(char bitmap[][X]);
 static char bitmap[Y][X];
@@ -62,7 +62,8 @@ static void build(void)
 			continue;
 		}
 
-		//swap(sx, sy, dx, dy);
+		swap(sx, sy, dx, dy);
+		break;
 	}
 }
 
@@ -85,7 +86,6 @@ int main(void)
 		build();
 		test(bitmap);
 		if (isEqual()) SCORE++;
-		break;
 
 		printf("#%d %d\n", tc++, SCORE);
 	}
