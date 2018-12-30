@@ -7,9 +7,9 @@
 //2048 64 
 using namespace std;
 const int BLOCK = 32;
-const int X = 2048/4;
-const int Y = 2048/4;
-const int N = 1000/4;
+const int X = 2048/2;
+const int Y = 2048/2;
+const int N = 500;
 
 extern void test(char bitmap[][X]);
 static char bitmap[Y][X];
@@ -52,7 +52,8 @@ static void build(void)
 		memcpy(bitmap_Org[y], bitmap[y], X);
 
 	for (int c = 0; c < N; c++) {
-		int sx = (rand() % (X / BLOCK)) * BLOCK;
+	//for (int c = 0; c < 10; c++) {
+			int sx = (rand() % (X / BLOCK)) * BLOCK;
 		int sy = (rand() % (Y / BLOCK)) * BLOCK;
 		int dx = (rand() % (X / BLOCK)) * BLOCK;
 		int dy = (rand() % (Y / BLOCK)) * BLOCK;
@@ -61,9 +62,12 @@ static void build(void)
 			c--;
 			continue;
 		}
-
+		
 		swap(sx, sy, dx, dy);
-		break;
+		/*swap(0, 0, 96, 0);
+		swap(96, 96, 320, 320);
+		swap(32, 0, 352, 32);
+		break;*/
 	}
 }
 

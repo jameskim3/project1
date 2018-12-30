@@ -29,13 +29,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="160808.puzzle1.cpp">
+    <ClCompile Include="161010.bitmap1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sol_181224.cpp">
+    <ClCompile Include="sol_180501.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sol_170816.cpp">
+    <ClCompile Include="sol_180827.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sol_180828.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sol_181031.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sol_181230.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
