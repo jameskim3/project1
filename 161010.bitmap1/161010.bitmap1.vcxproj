@@ -96,7 +96,10 @@
     <ClCompile Include="sol_181031.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="sol_181230.cpp" />
+    <ClCompile Include="sol_181230.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

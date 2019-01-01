@@ -94,7 +94,7 @@ void flip(unsigned char bitmap[NM][NM / 8], int mode)
 
 int main(void)
 {
-	static const int TCSIZE = 12;// 1024;
+	static const int TCSIZE = 1024;
 
 	static unsigned char data[TCSIZE][NN] = { 0 };
 	static unsigned char org[TCSIZE][NN] = { 0 };
@@ -117,10 +117,8 @@ int main(void)
 	for (register int TC = 0; TC < TCSIZE; TC++)
 	{
 		noise(bitmap[TC]);
-		rotate(bitmap[TC], 3);
-//		rotate(bitmap[TC], rand() % 4);
-//		flip(bitmap[TC], 2);
-//		flip(bitmap[TC], rand() % 3);
+		rotate(bitmap[TC], rand() % 4);
+		flip(bitmap[TC], rand() % 3);
 	}
 
 	start = clock();

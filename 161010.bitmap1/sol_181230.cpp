@@ -1,9 +1,11 @@
+//SCORE: 10241211
 #define NN 4096 
 #define NM 256 
-
+extern void flip(unsigned char bitmap[NM][NM / 8], int mode);
+extern void rotate(unsigned char bitmap[NM][NM / 8], int angle);
 void encode(unsigned char bitmap[NM][NM / 8], unsigned char data[NN]){
 	int cnt = 0;
-	for (int i = 0; i < NN; i++){
+	for (register int i = 0; i < NN; i++){
 		int val = data[i];
 		int b = 0;
 		for (int j = 0; j < 4; j++){
@@ -38,24 +40,42 @@ void adjmap(unsigned char bitmap[NM][NM / 8]) {
 	}
 	for (int i = 0; i < 64; i++){
 		for (int j = 0; j < 4; j++){
-			int y = i * 2;
-			int x = 31;
-			int k = j*2+1;
-			sum[4] += (bitmap[y][x] >> k) & 1 ? 1 : 0;
-			
-			sum[5] += (bitmap[(127 - i) * 2][31] >> ((4 - j - 1) * 2)) & 1 ? 1 : 0;
-			sum[6] += (bitmap[i * 2 + 1][0] >> (j * 2 + 1)) & 1 ? 1 : 0;
-			y = (64+i) * 2 +1;
-			x = 0;
-			k = j * 2;
-			sum[7] += (bitmap[y][x] >> k) & 1 ? 1 : 0;
+			sum[4] += (bitmap[i*2][31] >> (j*2+1) ) & 1 ? 1 : 0;
+			sum[5] += (bitmap[(i+64)*2+1][31] >> (j*2+1)) & 1 ? 1 : 0;
+			sum[6] += (bitmap[i*2][0] >> j*2) & 1 ? 1 : 0;
+			sum[7] += (bitmap[(i+64)*2+1][0] >>j*2) & 1 ? 1 : 0;
 		}
 	}
-	int a = 123;
+	int max_idx = 0;
+	int max_val = -1;
+	for (int i = 0; i < 8; i++){
+		if (max_val < sum[i]){
+			max_val = sum[i];
+			max_idx = i;
+		}
+	}
+	switch (max_idx){
+	case 1:
+		flip(bitmap, 2); break;
+	case 2:
+		flip(bitmap, 1); break;
+	case 3:
+		rotate(bitmap, 2); break;
+	case 4:
+		rotate(bitmap, 3); break;
+	case 5:
+		flip(bitmap, 1);
+		rotate(bitmap, 3); break;
+	case 6:
+		flip(bitmap, 2);
+		rotate(bitmap, 3); break;
+	case 7:
+		rotate(bitmap, 1); break;
+	}
 }
 void decode(unsigned char data[NN], unsigned char bitmap[NM][NM / 8]) {
 	adjmap(bitmap);
-	for (int i = 0; i < NN; i++){
+	for (register int i = 0; i < NN; i++){
 		int val = 0;
 		for (int j = 0; j < 4; j++){
 			int cnt = 0;
