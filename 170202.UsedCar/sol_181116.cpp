@@ -27,7 +27,11 @@ struct BK{
 };
 BK bk;
 MyCar* myHash[4][max_item + 10];
-int rp=1;
+int rp=0;
+
+void init(){
+
+}
 void copyCar(MyCar* tar, CAR* src){
 	tar->id = rp;
 	tar->order = 0;
@@ -76,7 +80,7 @@ void addHash(MyCar* c){
 		push(i, pos[i], c);
 }
 void buy_car(CAR car){
-	if (rp == 1){
+	if (rp == 0){
 		bk.max[AG] = 20;
 		bk.max[PA] = 12;
 		bk.max[EN] = 5000;
@@ -161,11 +165,11 @@ void refund(int order_no){
 }
 int empty_car(){
 	int cnt = 0;
-	for (int i = 1; i < rp; i++){
+	for (int i = 0; i < rp; i++){
 		if (Nd[i].order == 0)
 			cnt++;
 	}
-	rp = 1;
+	rp = 0;
 	sel_cnt = 1;
 	for (int i = 0; i < 2000; i++){
 		order_cnt[i] = 0;

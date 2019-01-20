@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="171111.Disk.cpp" />
+    <ClCompile Include="sol_190114.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="user_code.cpp" />
   </ItemGroup>

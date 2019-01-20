@@ -1,4 +1,4 @@
-
+//Performance = 4201, Final=650
 extern void rotate(int face, int cw);
 
 const int LM = 3;
@@ -29,7 +29,7 @@ void myRotate(int cube[6][3][3], int face, int cw)
 {
 	int local[6][LM][LM];
 	mycopy_cube(cube, local);
-	
+
 	int i;
 	switch (face)
 	{
@@ -190,7 +190,7 @@ unsigned long hash(int cube[6][3][3])
 
 void addHashTable(info t)
 {
-	
+
 }
 
 void register_cube(int cube[6][3][3], int face, int cw, int n)
@@ -200,7 +200,7 @@ void register_cube(int cube[6][3][3], int face, int cw, int n)
 	info *t = &heap[rp++];
 	mycopy_cube(cube, t->cube);
 	t->hash = h;
-	t->n = n+1;
+	t->n = n + 1;
 	myPath[n][0] = face;
 	myPath[n][1] = cw;
 
@@ -272,7 +272,7 @@ void dfs(int n)
 	register int i, j, k;
 	if (ans_cnt <= n)return;
 	if (n >= 5)return;
-	
+
 	info* t1 = find_hash_table(myCube);
 	if (t1 != 0)
 	{
@@ -295,7 +295,7 @@ void dfs(int n)
 			temp_path[n][1] = j;
 
 			dfs(n + 1);
-			myRotate(myCube, i, 1-j);
+			myRotate(myCube, i, 1 - j);
 		}
 	}
 }
@@ -310,7 +310,7 @@ void runTest(int local[6][LM][LM])
 					myCube[i][j][k] = i;
 		make_map(0);
 	}
-	
+
 	mycopy_cube(local, myCube);
 	ans_cnt = 10;
 	dfs(0);
@@ -321,6 +321,6 @@ void runTest(int local[6][LM][LM])
 	}
 	for (i = ans_heap->n - 1; i >= 0; i--)
 	{
-		rotate(ans_heap->path[i][0], 1-ans_heap->path[i][1]);
+		rotate(ans_heap->path[i][0], 1 - ans_heap->path[i][1]);
 	}
 }

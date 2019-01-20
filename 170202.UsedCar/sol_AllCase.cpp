@@ -1,3 +1,4 @@
+//Performance = 4104, Final=137129
 typedef struct
 {
 	int age;//0~20
@@ -19,7 +20,10 @@ typedef enum TYPE{
 };
 const int max_item = 10010;
 MyCar Nd[max_item];
-int rp = 1;
+int rp = 0;
+
+void init(){
+}
 void copyCar(MyCar* tar, CAR* src){
 	tar->id = rp;
 	tar->order = 0;
@@ -36,7 +40,7 @@ void buy_car(CAR car){
 int cnt_candi;
 int list_candi[10001];
 void chk_sort(int opt, int pos1, int pos2){
-	for (int i = 1; i < rp; i++){
+	for (int i = 0; i < rp; i++){
 		if (Nd[i].order==0 && Nd[i].val[opt] >= pos1 && Nd[i].val[opt] <= pos2)
 			list_candi[i]++;
 	}
@@ -64,14 +68,14 @@ void sort_pri(int from, int to){
 }
 int sell_car(){
 	int cnt = 0;
-	for (int i = 0; i <= 10000; i++){
+	for (int i = 0; i < 10000; i++){
 		if (list_candi[i] == 4){
 			order_map[sel_cnt][cnt++] = i;
 			Nd[i].order = sel_cnt;
 		}
 	}
-	order_cnt[sel_cnt] = cnt;
-	return sel_cnt++;
+	order_cnt[sel_cnt++] = cnt;
+	return sel_cnt-1;
 }
 void refund(int order_no){
 	for (int i = 0; i < order_cnt[order_no]; i++){
@@ -80,12 +84,12 @@ void refund(int order_no){
 }
 int empty_car(){
 	int cnt = 0;
-	for (int i = 1; i < rp; i++){
+	for (int i = 0; i < rp; i++){
 		if (Nd[i].order == 0)cnt++;
 	}
-	rp = 1;
+	rp = 0;
 	sel_cnt = 1;
-	for (int i = 0; i < 200; i++){
+	for (int i = 0; i < 2000; i++){
 		order_cnt[i] = 0;
 	}
 	return cnt;

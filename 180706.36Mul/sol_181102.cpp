@@ -1,5 +1,5 @@
 #include <string.h>
-const int user_div = 2;
+const int user_div = 6;
 int changeInt2(char c)
 {
 	int n;

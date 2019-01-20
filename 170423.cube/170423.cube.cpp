@@ -208,20 +208,21 @@ int main()
 		performance += end - start;
 
 		for (int face = 0; face < 6; face++)
-		for (int i = 0; i < LM; i++)
-		for (int j = 0; j < LM; j++)
-		{
-			if (Cube[face][i][j] != face)
-			{
-				rotScore += 1000.;
-			}
-		}
+			for (int i = 0; i < LM; i++)
+				for (int j = 0; j < LM; j++)
+				{
+					if (Cube[face][i][j] != face)
+					{
+						rotScore += 1000.;
+					}
+				}
 
 		total_score += rotScore;
 		printf("#%d : %.3f\n", tc, rotScore);
 	}
 
-	printf("total: %d %.6f", total_score, double(performance) / 10000.0);
+	printf("Performance = %d, Final=%d\n", performance, total_score);
+//	printf("total: %d %.6f", total_score, double(performance) / 10000.0);
 
 }
 

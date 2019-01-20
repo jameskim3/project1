@@ -12,7 +12,7 @@ unsigned char dummy2[256][256];
 //unsigned char org[4096][4096];
 //unsigned char org[4096][4096];
 
-void test(unsigned char newmap[4096][4096]);
+extern void test(unsigned char newmap[4096][4096]);
 
 void swap(int& a, int& b)
 {

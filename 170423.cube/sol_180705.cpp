@@ -1,28 +1,12 @@
-
-const int LM = 3;
-const int max_val = 300000;
-extern void rotate(int face, int cw);
-extern int check_cube(int src[6][LM][LM]);
-extern void copy_cube(int src[6][LM][LM], int tar[6][LM][LM]);
-extern void initial_cute(int cube[6][LM][LM]);
-int rp;
-struct INFO {
-	int face[6];
-	int cw[6];
-	int n;
-	int cube[6][LM][LM];
-	INFO* next;
-};
-INFO nd[max_val];
-INFO* heap[max_val];
-INFO path_map;
-int mapCube[6][LM][LM];
-int curCube[6][LM][LM];
-void rotate2(int c[6][LM][LM], int face, int cw)
+#define LM  3
+void copy_cube(int src[6][LM][LM], int tar[6][LM][LM]);
+void rotate(int face, int cw);
+void myRotate(int c[6][3][3], int face, int cw)
 {
-	int i;
 	int local[6][LM][LM];
 	copy_cube(c, local);
+
+	int i;
 	switch (face)
 	{
 	case 0:
@@ -160,135 +144,147 @@ void rotate2(int c[6][LM][LM], int face, int cw)
 	}
 
 }
-unsigned long getHash(int c[6][LM][LM])
+//hash
+#define MAX_TABLE 300000
+#define MAX_NODE 300000
+unsigned long hash(int c[6][3][3])
 {
 	unsigned long hash = 5381;
-	for (int i = 0; i < 6; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			for (int k = 0; k < 3; k++)
-			{
-				hash = (hash*33 + c[i][j][k]) % max_val;
-			}
-		}
-	}
-
-	return hash % max_val;
-}
-void addHeap(int n,int f,int c)
-{
-	unsigned long h = getHash(mapCube);
-	INFO* d = &nd[rp++];
-	copy_cube(mapCube, d->cube);
-
-	path_map.cw[n] = c;
-	path_map.face[n] = f;
-	d->n = n + 1;
-
-	for (int i = 0; i < n+1; i++)
-	{
-		d->cw[i] = path_map.cw[i];
-		d->face[i] = path_map.face[i];
-	}
-
-	d->next = heap[h];
-	heap[h] = d;
-}
-void make_map(int n)
-{
-	if (n >= 5)return;
-	for (int i = 0; i < 6; i++)
-	{
-		for (int j = 0; j < 2; j++)
-		{
-			rotate2(mapCube, i, j);
-			addHeap(n,i,j);
-			make_map(n + 1);
-			rotate2(mapCube, i, 1 - j);
-		}
-	}
+	int i, j, k;
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 3; j++)
+			for (k = 0; k < 3; k++)
+				hash = (((hash << 5) + hash) + c[i][j][k]) % MAX_TABLE;
+	return hash % MAX_TABLE;
 }
 
-INFO ans_path;
-INFO temp_path;
-INFO* ans_map;
-int ans_cnt;
-int chk_cube(int cube1[6][LM][LM], int cube2[6][LM][LM])
+//LinkedList
+typedef struct ListNode
 {
-	for (int face = 0; face < 6; face++)
-		for (int i = 0; i < LM; i++)
-			for (int j = 0; j < LM; j++)
-				if (cube1[face][i][j] != cube2[face][i][j])
+	int cube[6][3][3];
+	int hash;
+	int path[5][2];
+	int cnt;
+	ListNode* next;
+} ListNodeHeap;
+ListNodeHeap list[MAX_NODE];
+ListNodeHeap* heap[MAX_NODE];
+int rp;
+void appendListNode(int c[6][3][3], int path[5][2], int cnt)
+{
+	unsigned long h = hash(c);
+	list[rp].cnt = cnt;
+	int i, j, k;
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 3; j++)
+			for (k = 0; k < 3; k++)
+				list[rp].cube[i][j][k] = c[i][j][k];
+	for (i = 0; i < cnt; i++)
+		for (j = 0; j < 2; j++)
+			list[rp].path[i][j] = path[i][j];
+	list[rp].hash = h;
+	list[rp].next = heap[h];
+	heap[h] = &list[rp];
+	rp++;
+}
+
+int isMatch(int c[6][3][3], int d[6][3][3])
+{
+	int i, j, k;
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 3; j++)
+			for (k = 0; k < 3; k++)
+				if (c[i][j][k] != d[i][j][k])
 					return 0;
 	return 1;
 }
-INFO* isMatch(int cube1[6][LM][LM])
+ListNode* findNode(int c[6][3][3])
 {
-	int h = getHash(cube1);
-	INFO* iter = heap[h];
-	while (iter != 0)
+	unsigned long h = hash(c);
+	ListNode* pnode = heap[h];
+	while (pnode)
 	{
-		if (chk_cube(cube1, iter->cube))
-			return iter;
-		iter = iter->next;
+		if (isMatch(c, pnode->cube))
+			return pnode;
+		pnode = pnode->next;
 	}
+
 	return 0;
 }
-void solve(int n)
+
+int myCube[6][3][3];
+int ans_path[5][2];
+int rot_path[5][2];
+ListNode* ans;
+int ans_cnt;
+
+void make_map(int n)
 {
-	register int i, j, k;
-	if (ans_cnt <= n)return;
-	if (n >= 5)return;
-
-	INFO* t1 = isMatch(mapCube);
-	if (t1 != 0)
-	{
-		ans_map = t1;
-		ans_cnt = n;
-
-		for (k = 0; k < n; k++)
+	if (n >= 5) return;
+	int i, j, k;
+	for (i = 0; i < 6; i++)
+		for (j = 0; j < 2; j++)
 		{
-			ans_path.face[k] = temp_path.face[k];
-			ans_path.cw[k] = temp_path.cw[k];
+			rot_path[n][0] = i;
+			rot_path[n][1] = j;
+			myRotate(myCube, i, j);
+			appendListNode(myCube, rot_path, n + 1);
+			make_map(n + 1);
+			myRotate(myCube, i, 1 - j);
 		}
-	}
+}
 
+void dfs(int n)
+{
+	if (n >= 5) return;
+	if (ans_cnt <= n) return;
+	int i, j, k;
+
+	ListNode* pnode = findNode(myCube);
+	if (pnode != 0 && n < ans_cnt)
+	{
+		ans_cnt = n;
+		for (i = 0; i < n; i++)
+			for (j = 0; j < 2; j++)
+				ans_path[i][j] = rot_path[i][j];
+		ans = pnode;
+	}
 	for (i = 0; i < 6; i++)
 	{
 		for (j = 0; j < 2; j++)
 		{
-			rotate2(mapCube, i, j);
-			temp_path.face[n] = i;
-			temp_path.cw[n] = j;
-
-			solve(n + 1);
-			//if (ans_map != 0)return;
-			rotate2(mapCube, i, 1 - j);
+			rot_path[n][0] = i;
+			rot_path[n][1] = j;
+			myRotate(myCube, i, j);
+			dfs(n + 1);
+			myRotate(myCube, i, 1 - j);
 		}
 	}
 }
-void runTest(int a[6][LM][LM])
+
+void runTest(int local[6][3][3])
 {
+	int i, j, k;
+
 	if (rp == 0)
 	{
-		initial_cute(mapCube);
+		for (i = 0; i < 6; i++)
+			for (j = 0; j < 3; j++)
+				for (k = 0; k < 3; k++)
+					myCube[i][j][k] = i;
 		make_map(0);
 	}
-	ans_map = 0;
-	ans_cnt = 12;
-	copy_cube(a, mapCube);
-	solve(0);
-	for (int i = 0; i < ans_cnt; i++)
-	{
-		rotate(ans_path.face[i], ans_path.cw[i]);
-	}
-	int cnt = ans_map->n - 1;
-	while (cnt>=0)
-	{
-		rotate(ans_map->face[cnt], 1- ans_map->cw[cnt]);
-		cnt--;
-	}
+	copy_cube(local, myCube);
+
+	ans = 0;
+	ans_cnt = 99;
+
+	dfs(0);
+
+	for (i = 0; i < ans_cnt; i++)
+		rotate(ans_path[i][0], ans_path[i][1]);
+	for (i = ans->cnt - 1; i >= 0; i--)
+		rotate(ans->path[i][0], 1 - ans->path[i][1]);
+
+	return;
 }
-
-
