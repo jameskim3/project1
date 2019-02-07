@@ -192,4 +192,5 @@ void close(char* document)
 		st = st->next;
 		if (st) document[cnt++] = '\n';
 	}
+	cnt = cnt;
 }

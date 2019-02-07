@@ -85,7 +85,6 @@
   <ItemGroup>
     <ClCompile Include="180120.Capture.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="UserCode.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

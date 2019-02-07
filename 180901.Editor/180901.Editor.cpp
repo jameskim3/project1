@@ -20,7 +20,6 @@ extern void moveDown(int n);
 extern void moveLeft(int n);
 extern void moveRight(int n);
 extern void close(char* document);
-extern int getTotalChar();
 
 static int peuso_rand()
 {
@@ -43,7 +42,6 @@ int main()
 			if (peuso_rand() % 100 == 99)
 			{
 				putEnter();
-				char_cnt = getTotalChar();
 				DS++;
 			}
 			if (peuso_rand() % 100 == 99)

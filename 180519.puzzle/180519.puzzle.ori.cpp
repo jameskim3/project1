@@ -7,7 +7,7 @@ static unsigned char dummy1[256];
 static unsigned char orgmap[4096][4096];
 static unsigned char dummy2[256];
 static unsigned char newmap[4096][4096];
-static unsigned char dummy3[256];
+static unsigned char dummy3[4096];//256
 static unsigned char xoverlab[4096][4096];
 static unsigned char yoverlab[4096][4096];
 
