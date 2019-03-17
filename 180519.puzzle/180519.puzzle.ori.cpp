@@ -100,16 +100,17 @@ static void build_map(void)
 int main()
 {
 	setbuf(stdout, NULL);
-	int result = 1000000;
+	int TC = 100;
+	int result = 100000*TC;
 	memset(dummy3, 0,4096);
-	for (register int T = 0; T<10; T++)
+	for (register int T = 0; T<TC; T++)
 	{
 		build_map();
 		time_t start = clock();
 		test(newmap);
 		result += (int)((clock() - start) / (CLOCKS_PER_SEC / 1000));
 		if (check_map(newmap))result -= 100000;
-		printf("%2d:%6d", T + 1, result);
+		printf("%2d:%6d\n", T + 1, result);
 	}
 	return 0;
 }

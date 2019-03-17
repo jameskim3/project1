@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D75FE4C2-D29C-4D4E-A974-2EC3581C60E8}</ProjectGuid>
+    <ProjectGuid>{05B49CC5-5413-40C3-806A-F465F5DADA26}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My180714disk2</RootNamespace>
+    <RootNamespace>My190219Social_Media</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,18 +83,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="180714.disk2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="main_test.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="sol1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="sol1a.cpp" />
-    <ClCompile Include="sol_190208.cpp" />
+    <ClCompile Include="190219.Social_Media.cpp" />
+    <ClCompile Include="sol_190219.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

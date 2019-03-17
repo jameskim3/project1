@@ -29,19 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="180714.disk2.cpp">
+    <ClCompile Include="190219.Social_Media.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sol1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol1a.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol_190208.cpp">
+    <ClCompile Include="sol_190219.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
