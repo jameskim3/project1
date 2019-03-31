@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{59A3F41F-4128-4CBC-9035-A8397D4BCFF1}</ProjectGuid>
+    <ProjectGuid>{D780EABB-0759-48B4-B31E-80F577972651}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My180708bitmap2</RootNamespace>
+    <RootNamespace>My190324Cell</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,14 +83,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="180708.bitmap2.cpp" />
-    <ClCompile Include="sol1.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="sol_180829.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="sol_181106.cpp" />
+    <ClCompile Include="190324.Cell.cpp" />
+    <ClCompile Include="sol_190324.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

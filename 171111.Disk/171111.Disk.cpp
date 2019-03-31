@@ -82,7 +82,7 @@ int main(){
 		}
 		else{
 			for (register int c = 0; c < size; c++){
-				data[c] = pseudo_rand() % 256;
+				data[c] = pseudo_rand() % 128;// 256;
 			}
 			memcpy(name, filename[file], 32);
 			_file_write(file, pos, data, size);
@@ -90,8 +90,8 @@ int main(){
 			wcnt++;
 		}
 
-		for (int i = 0; i < 20; i++){
-			int err = pseudo_rand() % 256;
+		for (int i = 0; i < 10; i++){
+			int err = pseudo_rand() % 128;// 256;
 			int pos = (pseudo_rand() | (pseudo_rand() << 15)) % (65536 * 512);
 			disk[pos] = err;
 		}

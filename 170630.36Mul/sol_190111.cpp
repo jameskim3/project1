@@ -14,8 +14,7 @@ void mat(char ret[600], char src[256], char tar[256]){
 	ULL s[256] = { 0 };
 	ULL t[256] = { 0 };
 	ULL r[600] = { 0 };
-	int len1 = strlen(
-		src);
+	int len1 = strlen(src);
 	int len2 = strlen(tar);
 	int mul = 1;
 	int max1, max2;

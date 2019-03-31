@@ -39,29 +39,58 @@ void my_disk_write(int p, char d[512]){
 		disk_write(p + FPART*i, d);
 	}
 }
+//void my_disk_read(int p, char d[512]){
+//	char tmp[4][512];
+//	disk_read(p, d);
+//	disk_read(p+FPART, tmp[1]);
+//	if (strncmp(tmp[1], d, 512))
+//		return;
+//	for (int i = 2; i < 4; i++){
+//		disk_read(p + FPART*i, tmp[i]);
+//	}
+//	for (int i = 0; i < 512; i++){
+//		if (d[i] != tmp[1][i]){
+//			char valid[512] = { 0 };
+//			valid[d[i] + 128]++;
+//			valid[tmp[1][i]+128]++;
+//			valid[tmp[2][i]+128]++;
+//			valid[tmp[3][i]+128]++;
+//			if (valid[tmp[1][i] + 128]>1)
+//				d[i] = tmp[1][i];
+//			else if (valid[tmp[2][i] + 128]>1)
+//				d[i] = tmp[2][i];
+//			else if (valid[tmp[3][i] + 128]>1)
+//				d[i] = tmp[3][i];
+//		}
+//	}
+//	my_disk_write(p, d);
+//}
 void my_disk_read(int p, char d[512]){
-	char tmp[4][512];
-	disk_read(p, d);
-	disk_read(p+FPART, tmp[1]);
-	if (strncmp(tmp[1], d, 512))
-		return;
-	for (int i = 2; i < 4; i++){
+	char tmp[5][512];
+	for (int i = 0; i < 4; i++){
 		disk_read(p + FPART*i, tmp[i]);
 	}
 	for (int i = 0; i < 512; i++){
-		if (d[i] != tmp[1][i]){
-			char valid[512] = { 0 };
-			valid[d[i] + 128]++;
-			valid[tmp[1][i]+128]++;
-			valid[tmp[2][i]+128]++;
-			valid[tmp[3][i]+128]++;
-			if (valid[tmp[1][i] + 128]>1)
-				d[i] = tmp[1][i];
-			else if (valid[tmp[2][i] + 128]>1)
-				d[i] = tmp[2][i];
-			else if (valid[tmp[3][i] + 128]>1)
-				d[i] = tmp[3][i];
+		int cnt[512] = { 0 };
+		int que[5] = { 0 };
+		int rp = 0;
+		cnt[tmp[0][i]]++, que[rp++] = tmp[0][i];
+		cnt[tmp[1][i]]++, que[rp++] = tmp[1][i];
+		cnt[tmp[2][i]]++, que[rp++] = tmp[2][i];
+		cnt[tmp[3][i]]++, que[rp++] = tmp[3][i];
+		
+		int max = -1;
+		int max_idx = 0;
+		for (int j = 0; j < rp; j++){
+			if (max < cnt[que[j]]){
+				max = cnt[que[j]], max_idx = que[j];
+			}
 		}
+		if (max == 2)
+			int af3 = 1234;		
+		if (max == 3)
+			int af4 = 1234;
+		d[i] = max_idx;
 	}
 	my_disk_write(p, d);
 }

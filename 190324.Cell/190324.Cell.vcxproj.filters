@@ -29,16 +29,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="180708.bitmap2.cpp">
+    <ClCompile Include="190324.Cell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sol1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol_180829.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sol_181106.cpp">
+    <ClCompile Include="sol_190324.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
