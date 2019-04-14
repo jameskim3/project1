@@ -3,11 +3,10 @@ extern void _read_data(int sector, unsigned char* data);
 extern void _change_disk(int disk);
 
 typedef struct st{
-	int pre;
 	int next;
-	int off;
 	int size;
 	int sector_no;
+	unsigned char data[1024];
 }ST;
 
 static unsigned char DISK2[16*1024*1024];//DISK2[16][1024][1024];
@@ -80,6 +79,9 @@ int getfilenum(unsigned char* fn)
 void searchSector(int fnum, int offset, unsigned char* f_remain, int* pre_sector, int *pre_off_size){
 
 }
+void searchSector(int fnum, int offset, ST* pre, ST* next,int* pre_pos){
+
+}
 
 void int2char(unsigned char *c, int v){
 	int t;
@@ -90,6 +92,16 @@ void int2char(unsigned char *c, int v){
 		pos++;
 		v /= 256;
 	}
+}
+void resetST(ST* data){
+	unsigned char tmp[1024] = { 0 };
+	memcpy2(data->data, tmp, 1024);
+	data->next = 0;
+	data->sector_no = 0;
+	data->size = 0;
+}
+void makeSector(ST* t){
+
 }
 void makeSector(int pre, int next, int size, int off, unsigned char *cont, unsigned char *ret){
 	int dn = DN0;
@@ -109,31 +121,108 @@ void makeSector(int pre, int next, int size, int off, unsigned char *cont, unsig
 	memcpy2(&ret[6], uc_size, 2);
 	memcpy2(&ret[8], cont, 1016);
 }
+int getNextSector(int p){
+	int s=0;
+	return s;
+}
 int getNewSector(){
-	return 0;
+	int p;
+	if (DPOS != 0){
+		p = DPOS;
+		DPOS = getNextSector(DPOS);
+	}
+	else{
+		p = NPOS++;
+	}
+	return p;
+}
+void writeSector(int sector_no, ST* st){
+
+}
+void copyST(ST* st, int src_sector_no){
+
+}
+void addEmptySector(ST st){
+
 }
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size){
 	int fnum = getfilenum(file_name);
-	unsigned char pre_f_info[1024] = { 0 };
-	int pre_sector, pre_off_size;
-	searchSector(fnum, offset, pre_f_info, &pre_sector, &pre_off_size);
-	unsigned char ret[2048] = { 0 };
-	unsigned char cont[1024] = { 0 };
-	memcpy2(ret, data, size);
-	memcpy2(&ret[size], pre_f_info, pre_off_size);
+	ST pre;
+	ST next;
+	ST cur;
+	int pre_pos;
+	searchSector(fnum, offset, &pre, &next, &pre_pos);
+	unsigned char ret[8192] = { 0 };
+	memcpy2(ret, &pre.data[pre_pos], pre.size-pre_pos);
+	memcpy2(&ret[pre.size - pre_pos], data, size);
+
+	int total_size = pre.size - pre_pos + size;
+	pre.size = pre_pos;
 
 	int cnt = 0;
-	while (cnt < size + pre_off_size){
+	while (cnt < total_size){
 		int sn = getNewSector();
-		if (size + pre_off_size> cnt+1024){
-			makeSector(pre_sector, 0, 1024, 0, &ret[cnt], cont);
-			memcpy2(&DISK2[DS * 0 + SS*sn], ret, 1024);
-
+		if (total_size> cnt + 1016){
+			memcpy2(cur.data, &ret[cnt], 1016);
+			cur.sector_no = sn;
+			cur.size = 1016;
+			writeSector(cur.sector_no, &cur);
 		}
+		else{
+			int ts = total_size - cnt;
+			memcpy2(cur.data, &ret[cnt], ts);
+			cur.sector_no = sn;
+			cur.size = ts;
+			writeSector(cur.sector_no, &cur);
+		}
+		pre.next = sn;
+		writeSector(pre.sector_no, &pre);
+		pre = cur;
 	}
+	cur.next = next.sector_no;
+	writeSector(cur.sector_no, &cur);
 }
 void delete_file(unsigned char *file_name, int offset, int size){
+	int fnum = getfilenum(file_name);
+	ST pre;
+	ST next;
+	int pre_pos;
+	searchSector(fnum, offset, &pre, &next, &pre_pos);
+	
+	pre.size = pre_pos;
+	writeSector(pre.sector_no, &pre);
 
+	unsigned char ret[8192] = { 0 };
+	int cnt = 0;
+	if (pre.size - pre_pos >= size){
+		int r = pre.size - pre_pos - size;
+		memcpy2(ret, &pre.data[pre_pos + size], r);
+		memcpy2(&pre.data[pre_pos], ret, r);
+		pre.size = pre_pos+r;
+		cnt = size;
+	}
+	else{
+		pre.size = pre_pos;
+		cnt += pre.size - pre_pos;
+	}
+
+	while (cnt < size){
+		if (next.size > size-cnt){
+			int s = next.size - (size - cnt);
+			memcpy2(ret, &next.data[size - cnt], s);
+			memcpy2(next.data, ret, s);
+			next.size = s;
+			writeSector(next.sector_no, &next);
+			cnt = size;
+		}
+		else{
+			addEmptySector(next);
+			copyST(&next, next.next);
+			cnt += next.size;
+		}
+	}
+	pre.next = next.sector_no;
+	writeSector(pre.sector_no, &pre);
 }
 void read_file(unsigned char *file_name, unsigned char *data, int offset, int size){
 
@@ -142,14 +231,16 @@ void init(){
 	unsigned char ret[1024] = { 0 };
 	memcpy2(&DISK2[DS * 0 + SS * 0], ret, 1024);
 	int sn;
+	ST tmp;
 	unsigned char cont[1024 - 8] = { 0 };
 	unsigned char ret[1024] = { 0 };
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < 101; i++){
 		sn = i + 1;
-		makeSector(0, 0, 0, 0, cont, ret);
-		memcpy2(&DISK2[DS*0 + SS*sn], ret, 1024);
+		resetST(&tmp);
+		makeSector(&tmp);
+		memcpy2(&DISK2[DS*0 + SS*sn], tmp.data, 1024);
 	}
 
-	NPOS = 101;
+	NPOS = 102;
 	DPOS = -1;
 }
