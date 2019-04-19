@@ -79,9 +79,7 @@ int getfilenum(unsigned char* fn)
 void searchSector(int fnum, int offset, unsigned char* f_remain, int* pre_sector, int *pre_off_size){
 
 }
-void searchSector(int fnum, int offset, ST* pre, ST* next,int* pre_pos){
 
-}
 
 void int2char(unsigned char *c, int v){
 	int t;
@@ -144,6 +142,19 @@ void copyST(ST* st, int src_sector_no){
 }
 void addEmptySector(ST st){
 
+}
+void getSector(int no, ST* p){
+
+}
+void searchSector(int fnum, int offset, ST* pre, ST* next, int* pre_pos){
+	int sum = 0;
+	ST cur, old;
+	getSector(fnum+1, &cur);
+	while (sum < offset){
+		sum += cur.size;
+		old = cur;
+		getSector(cur.next, &cur);
+	}
 }
 void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size){
 	int fnum = getfilenum(file_name);
