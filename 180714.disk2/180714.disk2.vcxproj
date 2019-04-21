@@ -93,7 +93,9 @@
     <ClCompile Include="sol1.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="sol1a.cpp" />
+    <ClCompile Include="sol1a.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="sol_190208.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

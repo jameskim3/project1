@@ -114,9 +114,15 @@ void verify()
 	if (size + offset > FILE_SIZE[file])
 		size = FILE_SIZE[file] - offset;
 
-	//read_file(fn, data, offset, size);
+	read_file(fn, data, offset, size);
 	if (size>0 && memcmp(data, &FILE_CONTEXT[file][offset], size) != 0)
 		PENALTY += 1000000;
+
+	for (int i = 0; i < FILE_SIZE[file]; i++){
+		if (memcmp(data, &FILE_CONTEXT[file][i], 100) == 0){
+			int a324 = 234;
+		}
+	}
 }
 
 int main()
