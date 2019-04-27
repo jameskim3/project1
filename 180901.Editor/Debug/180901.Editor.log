@@ -1,4 +1,7 @@
-﻿Build started 2019-04-21 오후 11:12:50.
+﻿Build started 2019-04-27 오후 7:21:43.
+     1>Project "E:\source\project1\180901.Editor\180901.Editor.vcxproj" on node 2 (Clean target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppClean.targets(76,5): warning : Access to the path 'e:\source\project1\debug\180901.editor.exe' is denied.
+     1>Done Building Project "E:\source\project1\180901.Editor\180901.Editor.vcxproj" (Clean target(s)).
 
 Build succeeded.
 

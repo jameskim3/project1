@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 extern void _write_data(int sector, unsigned char* data, int size);
 extern void _read_data(int sector, unsigned char* data);
 extern void _change_disk(int disk);
@@ -128,6 +130,8 @@ int getNewSector(){
 }
 void addEmptySector(int sector){
 	ST tmp;
+	getSector(sector, &tmp);
+	resetST(&tmp);
 	tmp.size = 0;
 	tmp.next = DPOS;
 	tmp.sector_no = sector;
@@ -249,6 +253,24 @@ void read_file(unsigned char *file_name, unsigned char *data, int offset, int si
 		if (nsector>0)getSector(pre.next, &pre);
 	}
 	memcpy2(data, ret, size);
+}
+void read_size(unsigned char *file_name, int* size){
+	unsigned char t[4096];
+	int fnum = getfilenum(file_name);
+	ST cur;
+	int sn = fnum + 1;
+	getSector(sn, &cur);
+	while (1){
+		if (cur.size > 0){
+			memcpy2(t, &cur.data[6], cur.size);
+			t[cur.size] = 0;
+			printf("%s", t);
+		}
+		
+		*size += cur.size;
+		if (cur.next == 0)break;
+		getSector(cur.next, &cur);
+	}
 }
 void init(){
 	unsigned char ret[1024] = { 0 };

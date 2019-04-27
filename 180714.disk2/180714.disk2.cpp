@@ -2,7 +2,7 @@
 #include <time.h>
 
 static unsigned char DISK[16][1024][1024];
-static unsigned char FILE_CONTEXT[100][300000];
+static unsigned char FILE_CONTEXT[100][600000];
 static char FILE_NAME[100][16];
 static int FILE_SIZE[100];
 static int TOTAL_SIZE;
@@ -11,6 +11,7 @@ static int DISK_NUM;
 extern void insert_file(unsigned char *file_name, unsigned char *data, int offset, int size);
 extern void delete_file(unsigned char *file_name, int offset, int size);
 extern void read_file(unsigned char *file_name, unsigned char *data, int offset, int size);
+extern void read_size(unsigned char *file_name, int* size);
 extern void init();
 
 void _write_data(int sector, unsigned char* data, int size)
@@ -102,8 +103,15 @@ void delete_data()
 
 void verify()
 {
-	int file = rand() % 100;
+	int fsize[100] = { 0 };
 	unsigned char fn[16];
+	for (int i = 0; i < 100; i++){
+		for (int j = 0; j < 16; j++)
+			fn[j] = FILE_NAME[i][j];
+		read_size(fn, &fsize[i]);
+	}
+
+	int file = rand() % 100;
 	for (int i = 0; i < 16; i++)
 		fn[i] = FILE_NAME[file][i];
 
@@ -127,6 +135,7 @@ void verify()
 
 int main()
 {
+	freopen("out.txt", "w", stdout);
 	time_t start = clock();
 	for (int tc = 0; tc < 10 ; tc++)
 	{
@@ -147,7 +156,8 @@ int main()
 			case 7:
 			case 8:
 			case 9:
-				delete_data(); break;
+				//delete_data(); 
+				break;
 			}
 		}
 		for (int i = 0; i < 100; i++)

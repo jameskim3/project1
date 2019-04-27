@@ -79,6 +79,7 @@ static void verify(char* document)
 		hash = (((hash << 5) + hash) + document[i]) % 2531011;
 	}
 
+	printf("\n%d", hash);
 	int ans_val;
 	scanf("%d", &ans_val);
 	if (hash != ans_val)
@@ -86,7 +87,7 @@ static void verify(char* document)
 }
 
 /*
-1239608
-1406054
-1956469
+1239608 661 111 98 102 69 175 87 3 483 31
+1459589 110 33 234 3 6 449 149 13 51 253
+256761 96 66 233 1 66 6 46 74 20
 */
