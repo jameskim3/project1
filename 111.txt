@@ -5,3 +5,5 @@ git push -u origin master
 
 
 rg_jzrb$
+
+git clone https://github.com/jameskim3/project1
