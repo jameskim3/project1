@@ -5,8 +5,8 @@ now i try to solve it in dfs
 */
 //32
 const int BLOCK = 32;
-const int X = 2048/2;
-const int Y = 2048/2;
+const int X = 2048/4;
+const int Y = 2048/4;
 //64
 const int BCNT = X / BLOCK;
 const int ALL_BLK = BCNT*BCNT;
