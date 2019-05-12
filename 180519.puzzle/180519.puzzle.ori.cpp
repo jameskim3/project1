@@ -100,7 +100,7 @@ static void build_map(void)
 int main()
 {
 	setbuf(stdout, NULL);
-	int TC = 10;
+	int TC = 100;
 	int result = 100000*TC;
 	memset(dummy3, 0,4096);
 	for (register int T = 0; T<TC; T++)

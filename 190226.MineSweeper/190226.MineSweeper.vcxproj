@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{14129BA5-C73B-412E-A6EC-8B1B23EA2E0C}</ProjectGuid>
+    <ProjectGuid>{E4020A2F-AD2A-4669-A7D8-1D246441738D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My180519puzzle</RootNamespace>
+    <RootNamespace>My190226MineSweeper</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -83,12 +83,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="180519.puzzle.ori.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="sol_190120.cpp" />
-    <ClCompile Include="sol_190512.cpp" />
+    <ClCompile Include="190226.MineSweeper.cpp" />
+    <ClCompile Include="sol_190506.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

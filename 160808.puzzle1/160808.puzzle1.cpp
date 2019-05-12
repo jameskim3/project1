@@ -7,9 +7,9 @@
 //2048 64 
 using namespace std;
 const int BLOCK = 32;
-const int X = 2048/4;
-const int Y = 2048/4;
-const int N = 500;
+const int X = 2048/2;
+const int Y = 2048/2;
+const int N = 1000;
 
 extern void test(char bitmap[][X]);
 static char bitmap[Y][X];

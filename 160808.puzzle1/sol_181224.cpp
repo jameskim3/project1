@@ -5,12 +5,12 @@ now i try to solve it in dfs
 */
 //32
 const int BLOCK = 32;
-const int X = 2048/4;
-const int Y = 2048/4;
+const int X = 2048/2;
+const int Y = 2048/2;
 //64
 const int BCNT = X / BLOCK;
 const int ALL_BLK = BCNT*BCNT;
-
+unsigned long long gc;
 struct BL{
 	int chk[4];
 	int right[ALL_BLK];
@@ -100,6 +100,7 @@ int checkValid(int n, int tp){
 	return 1;
 }
 void dfs(int n){
+	gc++;
 	//end
 	if (AnsCnt > 0)return;
 	if (n == ALL_BLK){
@@ -124,6 +125,7 @@ void dfs(int n){
 	if (lchk && uchk){
 		for (int i = 0; i < ND[left].rc; i++){
 			for (int j = 0; j < ND[up].dc; j++){
+				gc++;
 				if (ND[left].right[i] == ND[up].down[j]){
 					int tp = ND[left].right[i];
 					if (!checkValid(n,tp))continue;
@@ -138,6 +140,7 @@ void dfs(int n){
 	}
 	else if (lchk){
 		for (int i = 0; i < ND[left].rc; i++){
+			gc++;
 			int tp = ND[left].right[i];
 			if (!checkValid(n, tp))continue;
 			MyPath[n] = tp;
@@ -149,6 +152,7 @@ void dfs(int n){
 	}
 	else if (uchk){
 		for (int i = 0; i < ND[up].dc; i++){
+			gc++;
 			int tp = ND[up].down[i];
 			if (!checkValid(n, tp))continue;
 			MyPath[n] = tp;
@@ -160,6 +164,7 @@ void dfs(int n){
 	}
 	else{
 		for (int i = 0; i < ALL_BLK; i++){
+			gc++;
 			int tp = i;
 			if (visited[tp])continue;
 			MyPath[n] = tp;
@@ -171,6 +176,7 @@ void dfs(int n){
 	}
 }
 void test(char bitmap[][X]){
+	gc = 0;
 	for (int i = 0; i < Y; i++){
 		for (int j = 0; j < X; j++){
 			Mybitmap[i][j] = bitmap[i][j];
